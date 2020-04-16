@@ -1,3 +1,12 @@
+;; A lot of this code is from the simple neural network model that
+;; comes with NetLogo.  I'll be removing or replacing most of that.
+
+;; My contributions to this file are copyright 2020 Marshall Abrams
+;; under GPL 3.0.
+;;
+;; The older code is copyright 2006 Uri Wilensky.
+;; See the Info tab for details of the license for that code.
+
 globals [
   epoch-error   ;; average error in this epoch
   perceptron    ;; a single output-node
