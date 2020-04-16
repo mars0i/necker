@@ -17,5 +17,5 @@ license, visit https://creativecommons.org/licenses/by-nc-sa/3.0/ or
 send a letter to Creative Commons, 559 Nathan Abbott Way, Stanford,
 California 94305, USA.
 
-My contributions to this file are copyright 2020 Marshall Abrams,
+My contributions to the source file are copyright 2020 Marshall Abrams,
 under GPL 3.0.  See the LICENSE file in this repository.
