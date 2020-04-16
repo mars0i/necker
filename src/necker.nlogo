@@ -1,5 +1,6 @@
-;; A lot of this code is from the simple neural network model that
-;; comes with NetLogo.  I'll be removing or replacing most of that.
+;; A lot of this code is from the "Artificial Neural Net - Perceptron"
+;; model that comes with NetLogo.  I'll be removing or replacing most
+;; of that code as time goes on.
 
 ;; My contributions to this file are copyright 2020 Marshall Abrams
 ;; under GPL 3.0.
