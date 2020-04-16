@@ -201,12 +201,12 @@ to add-front-label [a-cube y-offset]
     ask front-upper-right [set fur-x xcor]
   ]
 
-  print (list ful-x fur-x y) ; DEBUG
+  ;print (list ful-x fur-x y) ; DEBUG
 
   let label-x ful-x + ( (abs (fur-x - ful-x)) / 2) + 15
   let label-y y + y-offset
 
-  print (list label-x label-y) ; DEBUG
+  ;print (list label-x label-y) ; DEBUG
 
   ask patch label-x label-y [
     set plabel-color front-label-color
@@ -398,6 +398,22 @@ end
 ;;
 ;; Runtime Procedures
 ;;
+
+;; marshall
+to go
+  ask nodes [
+    let asking-node self
+    ask my-links [
+      ask other-end [
+        ;print [weight] of myself ; DEBUG
+        let new-val (activation + (0.05 * ([weight] of myself) + ([activation] of asking-node)))
+        set activation max (list -1 (min (list 1 new-val)))
+      ]
+    ]
+    update-node-color self
+  ]
+  tick
+end
 
 ;; train sets the input nodes to a random input
 ;; it then computes the output
@@ -669,8 +685,8 @@ BUTTON
 50
 205
 83
-train
-train
+go
+go
 T
 1
 T
@@ -851,10 +867,10 @@ TEXTBOX
 BUTTON
 130
 90
-205
-123
-train once
-train
+207
+124
+go once
+go
 NIL
 1
 T
