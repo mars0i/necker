@@ -31,6 +31,8 @@ globals [
   surface-fill-color  ; when we paint the back of a cube
   front-label-color   ; color of "front" labeled near front of cube
   base-link-thickness
+  positive-link-weight ; needs to be smaller than neg link weight
+  negative-link-weight
 ]
 
 ;; A perceptron is modeled by input-node and bias-node agents
@@ -70,50 +72,41 @@ cubes-own [front-upper-left front-upper-right back-upper-left back-upper-right
            cube-nodes-lis front-nodes-lis back-nodes-lis ; lists
            cube-nodes front-nodes back-nodes] ; agentsets
 
-;;
-;; Setup Procedures
-;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Main procedures
 
 to setup
   clear-all
-
-  set-default-shape input-nodes "circle"
-  set-default-shape bias-nodes "bias-node"
-  set-default-shape output-nodes "output-node"
-
-;  create-output-nodes 1 [
-;    set activation random-activation
-;    set xcor 6
-;    set size 2
-;    set threshold 0
-;    set perceptron self
-;  ]
-;
-;  create-bias-nodes 1 [
-;    set activation 1
-;    setxy 3 7
-;    set size 1.5
-;    my-create-link-to perceptron
-;
-;  ]
-;
-;  create-input-nodes 1 [
-;    setup-input-node
-;    setxy -6 5
-;    set input-node-1 self
-;  ]
-;
-;  create-input-nodes 1 [
-;    setup-input-node
-;    setxy -6 0
-;    set input-node-2 self
-;  ]
-
-  ;; set our background to something more viewable than black
-  set bg-color white ; marshall
+  setup-constants
   ask patches [ set pcolor bg-color ]
+  setup-cube-network ; sets left-cube, right-cube
+  update-from-toggles
+  ;ask perceptron [ compute-activation ]
+  reset-ticks
+end
 
-  ;; marshall
+;; marshall
+to go
+  ask nodes [
+    let asking-node self
+    ask my-links [
+      ask other-end [
+        ;print [weight] of myself ; DEBUG
+        let new-val activation + ( 0.05 * ([weight] of myself) * ([activation] of asking-node) )
+        set activation max (list -1 (min (list 1 new-val)))
+      ]
+    ]
+    update-node-color self
+  ]
+  update-from-toggles
+  tick
+end
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Miscellaneous setup and go procedures
+
+to setup-constants
+  set bg-color white
   set-default-shape links "straight-no-arrow" ; this makes directed links look undirected
   set-default-shape nodes "circle"
   set half-square-side 60
@@ -129,26 +122,23 @@ to setup
   set surface-fill-color 9.7
   set front-label-color black
   set base-link-thickness 2
+  set positive-link-weight 0.3 ; abs val needs to be less than for neg link weight;
+  set negative-link-weight -1  ; if equal size, paradoxical perceptions are possible
+end
 
-  setup-cube-network ; sets left-cube, right-cube
-
-  ;; TODO: move these tests to RUN:
-
-  ;; marshall
+to update-from-toggles
   ifelse show-negative-links
     [ ask links with [weight < 0] [show-link] ]
     [ ask links with [weight < 0] [hide-link] ]
 
-  ;; marshall
   ifelse show-nodes
     [ ask nodes [show-turtle] ]
     [ ask nodes [hide-turtle] ]
-
-  ;ask perceptron [ compute-activation ]
-  reset-ticks
 end
 
-;; marshall
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Code to set up cube network
+
 to setup-cube-network
   create-cubes 2 [
     set color bg-color ; make the cube turtle icon invisible against background
@@ -280,33 +270,13 @@ to link-cube-nodes
   ask front-lower-left  [create-link-with ([front-upper-left] of myself)  [setup-positive-front-link]]
 end
 
-;to link-cube-nodes
-;  ask front-upper-left
-;    [create-links-with (turtle-set ([front-upper-right] of myself) ([front-lower-left] of myself) ([back-upper-left] of myself))
-;      [setup-positive-link]]
-;  ask back-lower-right
-;    [create-links-with (turtle-set ([back-lower-left] of myself) ([back-upper-right] of myself) ([front-lower-right] of myself))
-;      [setup-positive-link]]
-;  ask back-upper-left
-;    [create-links-with (turtle-set ([back-lower-left] of myself) ([back-upper-right] of myself))
-;      [setup-positive-link]]
-;  ask front-lower-right
-;    [create-links-with (turtle-set ([front-lower-left] of myself) ([front-upper-right] of myself))
-;      [setup-positive-link]]
-;  ask front-lower-left [create-links-with turtle-set ([back-lower-left]  of myself)
-;                         [setup-positive-link]]
-;  ask front-upper-right[create-links-with turtle-set ([back-upper-right] of myself)
-;                         [setup-positive-link]]
-;end
-
-
 ;; marshall
 to setup-positive-link
-  set weight 1
+  set weight positive-link-weight
   set thickness base-link-thickness
 end
 
-;; marshall
+;; GET RID OF THIS CODE
 to setup-positive-back-link
   setup-positive-link
   set color pos-link-back-color
@@ -326,7 +296,7 @@ end
 
 ;; marshall
 to setup-negative-link
-  set weight -1
+  set weight negative-link-weight
   set color item (random num-neg-link-colors) neg-link-colors ; neg links are hard to distinguish, so vary colors
   set thickness (base-link-thickness / 2)
   ;set shape "curve-up-no-arrow"
@@ -378,6 +348,39 @@ end
 
 ;; non-marshall code
 
+;; used to be in setup:
+
+  ;set-default-shape input-nodes "circle"
+  ;set-default-shape bias-nodes "bias-node"
+  ;set-default-shape output-nodes "output-node"
+;  create-output-nodes 1 [
+;    set activation random-activation
+;    set xcor 6
+;    set size 2
+;    set threshold 0
+;    set perceptron self
+;  ]
+;
+;  create-bias-nodes 1 [
+;    set activation 1
+;    setxy 3 7
+;    set size 1.5
+;    my-create-link-to perceptron
+;
+;  ]
+;
+;  create-input-nodes 1 [
+;    setup-input-node
+;    setxy -6 5
+;    set input-node-1 self
+;  ]
+;
+;  create-input-nodes 1 [
+;    setup-input-node
+;    setxy -6 0
+;    set input-node-2 self
+;  ]
+
 to setup-input-node
     set activation random-activation
     set size 1.5
@@ -399,21 +402,7 @@ end
 ;; Runtime Procedures
 ;;
 
-;; marshall
-to go
-  ask nodes [
-    let asking-node self
-    ask my-links [
-      ask other-end [
-        ;print [weight] of myself ; DEBUG
-        let new-val (activation + (0.05 * ([weight] of myself) + ([activation] of asking-node)))
-        set activation max (list -1 (min (list 1 new-val)))
-      ]
-    ]
-    update-node-color self
-  ]
-  tick
-end
+
 
 ;; train sets the input nodes to a random input
 ;; it then computes the output
