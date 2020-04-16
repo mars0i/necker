@@ -218,14 +218,20 @@ end
 to-report create-a-node [x y]
   let new-node "dummy-val"
   hatch-nodes 1 [
-    set activation random-activation
-    set size 8
+    set activation (random-float 2) - 1
+    update-node-color self
+    set size 15
     setxy x y
-    set color 85
     set new-node self
   ]
   report new-node
 end
+
+;; marshall
+to update-node-color [a-node]
+  ask a-node [set color (rgb (255 * (- activation)) (175 * activation) (255 * activation))]
+end
+
 
 ;; marshall
 ;; The back-front angular shift will be done separately
@@ -866,7 +872,7 @@ SWITCH
 445
 show-negative-links
 show-negative-links
-1
+0
 1
 -1000
 
@@ -877,7 +883,7 @@ SWITCH
 492
 show-nodes
 show-nodes
-1
+0
 1
 -1000
 
