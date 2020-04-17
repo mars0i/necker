@@ -26,10 +26,15 @@ globals [
   default-external-input
 ]
 
-links-own [ weight ] ; links between nodes
+;; Functionally, all links/constraints will be treated as
+;; undirected (or bi-directed), but we need directed links
+;; to control curved link shapes so that they don't flip
+;; directions randomly.
+directed-link-breed [constraints constraint]
+constraints-own [weight]
 
 ;; "neurons"
-breed [ nodes node ]
+breed [nodes node]
 nodes-own [activation prev-activation]
 
 ;; These don't do much, but it's useful to have a data structure to organize nodes.
@@ -64,7 +69,7 @@ end
 
 to setup-constants
   set bg-color white
-  set-default-shape links "straight-no-arrow" ; this makes directed links look undirected
+  set-default-shape constraints "straight-no-arrow" ; this makes directed links look undirected
   set-default-shape nodes "circle"
   set half-square-side 60
   set node-shift-x 60
@@ -80,8 +85,8 @@ to setup-constants
   set front-label-color black
   set base-link-thickness 2
   set min-activation-change 0.00001
-  set default-learning-rate 0.15
-  set default-external-input 0.0001
+  set default-learning-rate 1.00
+  set default-external-input 0.00001
   set negative-link-weight -1       ; if equal size, paradoxical perceptions are possible
   set positive-link-weight (2 / 3)  ; abs val needs to be less than for neg link weight
   ; "For purposes of this example, the strengths of connections have been arranged so that two negative inputs
@@ -91,8 +96,8 @@ end
 
 to update-from-ui-controls
   ifelse show-neg-links
-    [ ask links with [weight < 0] [show-link] ]
-    [ ask links with [weight < 0] [hide-link] ]
+    [ ask constraints with [weight < 0] [show-link] ]
+    [ ask constraints with [weight < 0] [hide-link] ]
 
   ifelse show-nodes
     [ ask nodes [show-turtle] ]
@@ -115,7 +120,7 @@ end
 to settle-network
   ask nodes [
     let asking-node self
-    ask my-links [
+    ask my-constraints [
       ask other-end [
         ;print [weight] of myself ; DEBUG
         set prev-activation activation
@@ -164,8 +169,8 @@ to setup-cube-network
     ask right-cube [
       link-across-cubes ([front-nodes-lis] of self) ([front-nodes-lis] of myself) "straight-no-arrow"
       link-across-cubes ([back-nodes-lis] of self)  ([back-nodes-lis] of myself)  "straight-no-arrow"
-      link-across-cubes ([front-nodes-lis] of self) ([back-nodes-lis] of myself)  "curve-up-no-arrow"
-      link-across-cubes ([back-nodes-lis] of self)  ([front-nodes-lis] of myself) "curve-down-no-arrow"
+      link-across-cubes ([front-nodes-lis] of self) ([back-nodes-lis] of myself)  "curve-down-no-arrow"
+      link-across-cubes ([back-nodes-lis] of self)  ([front-nodes-lis] of myself) "curve-up-no-arrow"
     ]
   ]
 
@@ -244,22 +249,22 @@ end
 ;; apparently, the order of node creation and not order of link creation determines what links are on top of others
 to link-cube-nodes
   ;; back links
-  ask back-upper-left   [create-link-with ([back-upper-right] of myself)  [setup-positive-back-link]]
-  ask back-upper-right  [create-link-with ([back-lower-right] of myself)  [setup-positive-back-link]]
-  ask back-lower-right  [create-link-with ([back-lower-left] of myself)   [setup-positive-back-link]]
-  ask back-lower-left   [create-link-with ([back-upper-left] of myself)   [setup-positive-back-link]]
+  ask back-upper-left   [create-constraint-to ([back-upper-right] of myself)  [setup-positive-back-link]]
+  ask back-upper-right  [create-constraint-to ([back-lower-right] of myself)  [setup-positive-back-link]]
+  ask back-lower-right  [create-constraint-to ([back-lower-left] of myself)   [setup-positive-back-link]]
+  ask back-lower-left   [create-constraint-to ([back-upper-left] of myself)   [setup-positive-back-link]]
 
   ;; mid (front-back) links
-  ask front-upper-left  [create-link-with ([back-upper-left] of myself)   [setup-positive-mid-link]]
-  ask front-upper-right [create-link-with ([back-upper-right] of myself)  [setup-positive-mid-link]]
-  ask front-lower-right [create-link-with ([back-lower-right] of myself)  [setup-positive-mid-link]]
-  ask front-lower-left  [create-link-with ([back-lower-left] of myself)   [setup-positive-mid-link]]
+  ask front-upper-left  [create-constraint-to ([back-upper-left] of myself)   [setup-positive-mid-link]]
+  ask front-upper-right [create-constraint-to ([back-upper-right] of myself)  [setup-positive-mid-link]]
+  ask front-lower-right [create-constraint-to ([back-lower-right] of myself)  [setup-positive-mid-link]]
+  ask front-lower-left  [create-constraint-to ([back-lower-left] of myself)   [setup-positive-mid-link]]
 
   ;; front links
-  ask front-upper-left  [create-link-with ([front-upper-right] of myself) [setup-positive-front-link]]
-  ask front-upper-right [create-link-with ([front-lower-right] of myself) [setup-positive-front-link]]
-  ask front-lower-right [create-link-with ([front-lower-left] of myself)  [setup-positive-front-link]]
-  ask front-lower-left  [create-link-with ([front-upper-left] of myself)  [setup-positive-front-link]]
+  ask front-upper-left  [create-constraint-to ([front-upper-right] of myself) [setup-positive-front-link]]
+  ask front-upper-right [create-constraint-to ([front-lower-right] of myself) [setup-positive-front-link]]
+  ask front-lower-right [create-constraint-to ([front-lower-left] of myself)  [setup-positive-front-link]]
+  ask front-lower-left  [create-constraint-to ([front-upper-left] of myself)  [setup-positive-front-link]]
 end
 
 to setup-positive-link
@@ -293,7 +298,7 @@ end
 
 to link-across-cubes [l-cube-lis r-cube-lis link-shape]
   (foreach l-cube-lis r-cube-lis
-    [ [l r] -> ask l [create-link-with r
+    [ [l r] -> ask l [create-constraint-to r
                        [setup-negative-link link-shape]
                      ]
     ])
@@ -301,7 +306,7 @@ end
 
 to make-back-links-dashed [back-corner-node]
   ask back-corner-node [
-    ask my-links [
+    ask my-constraints [
       if weight > 0 [ ; only positive, cube links
         set shape "dashed-no-arrow"
         set thickness (base-link-thickness / 2)
@@ -403,7 +408,7 @@ learning-rate
 learning-rate
 0.0
 1.0
-0.9948
+1.0
 1.0E-4
 1
 NIL
