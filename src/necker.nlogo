@@ -14,7 +14,6 @@ globals [
   input-node-1  ;; keep the input nodes in globals so we can refer
   input-node-2  ;; to them directly and distinctly
 
-  ;; marshall
   half-square-side ; how far nodes are from center of cube along x, y
   node-shift-x ; how much x shift of four nodes to give the illusion
   node-shift-y ; how much y shift of four nodes to give the illusion
@@ -65,7 +64,6 @@ to setup
   reset-ticks
 end
 
-;; marshall
 to go
   settle-network
   update-from-ui-controls ; run after settle-network to get latest weights, and before stopping
@@ -141,7 +139,6 @@ to settle-network
   ]
 end
 
-;; marshall
 to update-node-color [a-node]
   ask a-node [set color (rgb (255 * (- activation)) (175 * activation) (255 * activation))]
 end
@@ -194,7 +191,6 @@ to setup-cube-network
   add-front-label right-cube -15 - (2 * half-square-side)
 end
 
-;; marshall
 to add-front-label [a-cube y-offset]
   let ful-x 0
   let fur-x 0
@@ -218,7 +214,6 @@ to add-front-label [a-cube y-offset]
   ]
 end
 
-;; marshall
 to-report create-a-node [x y]
   let new-node "dummy-val"
   hatch-nodes 1 [
@@ -232,7 +227,6 @@ to-report create-a-node [x y]
   report new-node
 end
 
-;; marshall
 ;; The back-front angular shift will be done separately
 to set-cube-nodes
   ;; the order of node creation determines which links are on top of others
@@ -257,7 +251,6 @@ to set-cube-nodes
   set cube-nodes  (turtle-set cube-nodes-lis)
 end
 
-;; marshall
 ;; apparently, the order of node creation and not order of link creation determines what links are on top of others
 to link-cube-nodes
   ;; back links
@@ -279,7 +272,6 @@ to link-cube-nodes
   ask front-lower-left  [create-link-with ([front-upper-left] of myself)  [setup-positive-front-link]]
 end
 
-;; marshall
 to setup-positive-link
   set weight positive-link-weight
   set thickness base-link-thickness
@@ -291,19 +283,16 @@ to setup-positive-back-link
   set color pos-link-back-color
 end
 
-;; marshall
 to setup-positive-mid-link
   setup-positive-link
   set color pos-link-mid-color
 end
 
-;; marshall
 to setup-positive-front-link
   setup-positive-link
   set color pos-link-front-color
 end
 
-;; marshall
 to setup-negative-link
   set weight negative-link-weight
   set color item (random num-neg-link-colors) neg-link-colors ; neg links are hard to distinguish, so vary colors
@@ -311,7 +300,6 @@ to setup-negative-link
   ;set shape "curve-up-no-arrow"
 end
 
-;; marshall
 to link-across-cubes [l-cube-lis r-cube-lis]
   (foreach l-cube-lis r-cube-lis
     [ [l r] -> ask l [create-link-with r
@@ -320,7 +308,6 @@ to link-across-cubes [l-cube-lis r-cube-lis]
     ])
 end
 
-;; marshall
 to make-back-links-dashed [back-corner-node]
   ask back-corner-node [
     ask my-links [
