@@ -410,7 +410,7 @@ SWITCH
 5
 260
 152
-294
+293
 show-activations
 show-activations
 1
@@ -556,18 +556,10 @@ I was inspired by a Java applet that A. D. Marshall at Cardiff University had ma
 available on the web previously.  This is no longer available, though--no doubt partly
 because Java applets are considered obsolete and potentially dangerous.
 
-## HOW TO CITE
-
-
-
-Please cite the NetLogo software as:
-
-* Wilensky, U. (1999). NetLogo. http://ccl.northwestern.edu/netlogo/. Center for Connected Learning and Computer-Based Modeling, Northwestern University, Evanston, IL.
-
 ## COPYRIGHT AND LICENSE
 
 Copyright 2020 by Marshall Abrams.  Released under Gnu Public License version 3.0.
-See the file LICENSE that should be included with this file, or see https://www.gnu.org/licenses/gpl-3.0.en.html .
+Details can be found at https://www.gnu.org/licenses/gpl-3.0.en.html .
 @#$#@#$#@
 default
 true
