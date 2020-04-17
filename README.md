@@ -16,11 +16,9 @@ pedagogical tool for teaching about contraint satisfaction networks.
 NetLogo is a freely available tool available here:
 https://ccl.northwestern.edu/netlogo .
 
-A running online version of the program should be available at the URL
-below, although that version might lag behind the one in this
-repository.
-
-http://members.logical.net/~marshall/necker.html
+A running online version of the program should be available at the
+following URL, although that version might lag behind the one in this
+repository.  http://members.logical.net/~marshall/necker.html
 
 
 
