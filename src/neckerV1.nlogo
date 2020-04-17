@@ -1,6 +1,6 @@
 ;; Copyright 2020 Marshall Abrams under GPL 3.0.  See file LICENSE for details.
 
-;; TODO change node update to more closely match what's in the paper?
+;; OLD VERSION with only a single negative link per node
 
 globals [
   half-square-side ; how far nodes are from center of cube along x, y
@@ -162,10 +162,8 @@ to setup-cube-network
 
   ask left-cube [
     ask right-cube [
-      link-across-cubes ([front-nodes-lis] of self) ([front-nodes-lis] of myself) "straight-no-arrow"
-      link-across-cubes ([back-nodes-lis] of self)  ([back-nodes-lis] of myself)  "straight-no-arrow"
-      link-across-cubes ([front-nodes-lis] of self) ([back-nodes-lis] of myself)  "curve-up-no-arrow"
-      link-across-cubes ([back-nodes-lis] of self)  ([front-nodes-lis] of myself) "curve-down-no-arrow"
+      link-across-cubes ([front-nodes-lis] of self) ([front-nodes-lis] of myself)
+      link-across-cubes ([back-nodes-lis] of self)  ([back-nodes-lis] of myself)
     ]
   ]
 
@@ -283,18 +281,17 @@ to setup-positive-front-link
   set color pos-link-front-color
 end
 
-to setup-negative-link [link-shape]
+to setup-negative-link
   set weight negative-link-weight
   set color item (random num-neg-link-colors) neg-link-colors ; neg links are hard to distinguish, so vary colors
   set thickness (base-link-thickness / 2)
-  set shape link-shape
   ;set shape "curve-up-no-arrow"
 end
 
-to link-across-cubes [l-cube-lis r-cube-lis link-shape]
+to link-across-cubes [l-cube-lis r-cube-lis]
   (foreach l-cube-lis r-cube-lis
     [ [l r] -> ask l [create-link-with r
-                       [setup-negative-link link-shape]
+                       [setup-negative-link]
                      ]
     ])
 end
@@ -403,7 +400,7 @@ learning-rate
 learning-rate
 0.0
 1.0
-0.9948
+0.15
 1.0E-4
 1
 NIL
@@ -444,7 +441,7 @@ SWITCH
 258
 show-neg-links
 show-neg-links
-0
+1
 1
 -1000
 
@@ -468,7 +465,7 @@ external-input
 external-input
 0
 0.0002
-1.0E-5
+1.0E-4
 0.00001
 1
 NIL
@@ -874,7 +871,7 @@ Line -7500403 true 150 150 90 180
 Line -7500403 true 150 150 210 180
 
 curve-down-no-arrow
-25.0
+-4.0
 -0.2 0 0.0 1.0
 0.0 1 1.0 0.0
 0.2 0 0.0 1.0
@@ -883,9 +880,9 @@ true
 0
 
 curve-up-no-arrow
--25.0
+-5.0
 -0.2 0 0.0 1.0
-0.0 1 1.0 0.0
+0.0 1 2.0 2.0
 0.2 0 0.0 1.0
 link direction
 true
