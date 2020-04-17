@@ -81,11 +81,11 @@ to setup-constants
   set pos-link-back-color black; 96 ; 90
   set neg-link-colors [14 15 16 24 25 125 126 135] ; neg links are hard to distinguish, so vary colors
   set num-neg-link-colors length neg-link-colors
-  set surface-fill-color 9.7
+  set surface-fill-color 9.5
   set front-label-color black
   set base-link-thickness 2
   set min-activation-change 0.00001
-  set default-learning-rate 0.5
+  set default-learning-rate 0.15
   set default-external-input 0.0001
   set negative-link-weight -1       ; if equal size, paradoxical perceptions are possible
   set positive-link-weight (2 / 3)  ; abs val needs to be less than for neg link weight
@@ -400,12 +400,12 @@ SLIDER
 5
 80
 165
-114
+113
 learning-rate
 learning-rate
 0.0
 1.0
-0.5
+0.15
 1.0E-4
 1
 NIL
@@ -415,7 +415,7 @@ SWITCH
 6
 260
 152
-294
+293
 show-weights
 show-weights
 1
@@ -443,7 +443,7 @@ SWITCH
 6
 225
 152
-259
+258
 show-neg-links
 show-neg-links
 0
@@ -465,7 +465,7 @@ SLIDER
 5
 116
 166
-150
+149
 external-input
 external-input
 0
