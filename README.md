@@ -1,29 +1,21 @@
-# necker 
-Simple constraint satisfaction network model of Necker cube
-perception
+necker 
+===
+### A Necker cube constraint satisfaction model
 
-
-
-cf. McLelland and Rumelhart PDP book 1986 vol. II chapter 15.
-
-cf. Holyoak and Thagard *Mental Leaps* (1995) chapter 10.
+This is a simple "constraint satisfaction" neural network model of a
+perceptual process for interpreting a 2-D image known as a Necker cube
+as three-dimensional (https://en.wikipedia.org/wiki/Necker_cube). The
+model was inspired by a description in"Schemata and Sequential Thought
+Processes in PDP Models" D. E. Rumelhart, P. Smolensky, J. 1. McClelland
+and G. E. Hinton, chapter 14 in *Parallel Distributed Processing, Vol.
+2: Psychological and Biological Models*, eds. James L. McLelland, David
+E. Rumelhart.
+(cf. Holyoak and Thagard *Mental Leaps* (1995) chapter 10.)
 
 This program is written in NetLogo.  It's mainly intended as a
 pedagogical tool for teaching about contraint satisfaction networks.
+NetLogo is a freely available tool available here:
+https://ccl.northwestern.edu/netlogo .
 
-NetLogo is a freely available tool that's available here:
-
-https://ccl.northwestern.edu/netlogo/
-
-
-This program began as a modification of the "Artificial Neural Net -
-Perceptron" model in the NetLogo Models Library.  The code from that
-model is copyright 2006 Uri Wilensky and is licensed under the Creative
-Commons Attribution-NonCommercial-ShareAlike 3.0 License. To view a copy
-of that license, visit
-https://creativecommons.org/licenses/by-nc-sa/3.0/ or send a letter to
-Creative Commons, 559 Nathan Abbott Way, Stanford, California 94305,
-USA.
-
-My contributions to the source file are copyright 2020 Marshall Abrams,
-under GPL 3.0.  See the LICENSE file in this repository.
+Copyright 2020 Marshall Abrams, under GPL 3.0.  See the LICENSE file in
+this repository.
