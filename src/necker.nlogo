@@ -1,12 +1,6 @@
-;; A lot of this code is from the "Artificial Neural Net - Perceptron"
-;; model that comes with NetLogo.  I'll be removing or replacing most
-;; of that code as time goes on.
+;; Copyright 2020 Marshall Abrams under GPL 3.0.  See file LICENSE for details.
 
-;; My contributions to this file are copyright 2020 Marshall Abrams
-;; under GPL 3.0.
-;;
-;; The older code is copyright 2006 Uri Wilensky.
-;; See the Info tab for details of the license for that code.
+;; TODO change node update to more closely match what's in the paper?
 
 globals [
   epoch-error   ;; average error in this epoch
@@ -43,10 +37,9 @@ links-own [ weight ] ; links between nodes
 breed [ nodes node ]
 nodes-own [activation prev-activation]
 
-;; as turtles, these don't do anything, but it's useful to have a
-;; data structure to organize nodes
+;; These don't do much, but it's useful to have a data structure to organize nodes.
 breed [cubes cube]
-cubes-own [front-upper-left front-upper-right back-upper-left back-upper-right
+cubes-own [front-upper-left front-upper-right back-upper-left back-upper-right ; nodes
            front-lower-left front-lower-right back-lower-left back-lower-right
            cube-nodes-lis front-nodes-lis back-nodes-lis ; lists
            cube-nodes front-nodes back-nodes] ; agentsets
