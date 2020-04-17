@@ -100,7 +100,7 @@ to setup-constants
 end
 
 to update-from-toggles
-  ifelse show-negative-links
+  ifelse show-neg-links
     [ ask links with [weight < 0] [show-link] ]
     [ ask links with [weight < 0] [hide-link] ]
 
@@ -119,7 +119,7 @@ to settle-network
       ask other-end [
         ;print [weight] of myself ; DEBUG
         set prev-activation activation
-        let new-val activation + ( 1 * ([weight] of myself) * ([activation] of asking-node) ) + 0.0001
+        let new-val activation + ( learning-rate * ([weight] of myself) * ([activation] of asking-node) ) + external-input
         set activation max (list -1 (min (list 1 new-val)))
       ]
     ]
@@ -342,10 +342,10 @@ to fill-surface [surface-color lower-left-corner-node upper-right-corner-node] ;
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
-217
-9
-826
-319
+172
+10
+741
+300
 -1
 -1
 1.0
@@ -358,10 +358,10 @@ GRAPHICS-WINDOW
 0
 0
 1
--300
-300
--150
-150
+-280
+280
+-140
+140
 1
 1
 1
@@ -369,9 +369,9 @@ ticks
 30.0
 
 BUTTON
-130
+5
 10
-205
+80
 43
 setup
 setup
@@ -386,10 +386,10 @@ NIL
 1
 
 BUTTON
-130
-50
-205
-83
+5
+45
+80
+78
 go
 go
 T
@@ -403,56 +403,36 @@ NIL
 0
 
 SLIDER
-5
-130
-205
-163
+6
+86
+162
+120
 learning-rate
 learning-rate
 0.0
 1.0
-0.5
+0.4
 1.0E-4
 1
 NIL
 HORIZONTAL
 
 SWITCH
-221
-386
-366
-419
-show-weights?
-show-weights?
-0
+7
+233
+154
+267
+show-weights
+show-weights
+1
 1
 -1000
 
-TEXTBOX
-5
-60
-125
-78
-2. Train perceptron:
-11
-0.0
-0
-
-TEXTBOX
-5
-20
-129
-38
-1. Setup perceptron:
-11
-0.0
-0
-
 BUTTON
-130
-90
-207
-124
+83
+45
+160
+79
 go once
 go
 NIL
@@ -466,26 +446,41 @@ NIL
 0
 
 SWITCH
-430
-412
-615
-445
-show-negative-links
-show-negative-links
+6
+197
+155
+231
+show-neg-links
+show-neg-links
 0
 1
 -1000
 
 SWITCH
-430
-459
-565
-492
+7
+162
+153
+196
 show-nodes
 show-nodes
 0
 1
 -1000
+
+SLIDER
+6
+121
+163
+155
+external-input
+external-input
+0
+0.0002
+1.0E-4
+0.00001
+1
+NIL
+HORIZONTAL
 
 @#$#@#$#@
 To be revised.
