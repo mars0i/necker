@@ -98,7 +98,7 @@ to update-from-ui-controls
     [ ask nodes [show-turtle] ]
     [ ask nodes [hide-turtle] ]
 
-  ifelse show-weights
+  ifelse show-activations
     [ ask nodes [set label (precision activation 2)] ]
     [ ask nodes [set label ""] ]
 end
@@ -407,12 +407,12 @@ NIL
 HORIZONTAL
 
 SWITCH
-6
+5
 260
 152
-293
-show-weights
-show-weights
+294
+show-activations
+show-activations
 1
 1
 -1000
@@ -435,13 +435,13 @@ NIL
 0
 
 SWITCH
-6
+5
 225
-152
+151
 258
 show-neg-links
 show-neg-links
-0
+1
 1
 -1000
 
@@ -473,9 +473,9 @@ HORIZONTAL
 
 BUTTON
 5
-154
-165
-188
+152
+167
+187
 restore default parameters
 set-default-params
 NIL
@@ -496,7 +496,13 @@ NIL
 ## WHAT IS IT?
 
 This is a simple "constraint satisfaction" neural network model of a perceptual process for interpreting a 2-D image known as a Necker cube as three-dimensional
-(https://en.wikipedia.org/wiki/Necker_cube). The model was inspired by a description in"Schemata and Sequential Thought Processes in PDP Models" D. E. Rumelhart, P. Smolensky, J. 1. McClelland and G. E. Hinton, chapter 14 in *Parallel Distributed Processing, Vol. 2: Psychological and Biological Models*, eds. James L. McLelland, David E. Rumelhart.
+(https://en.wikipedia.org/wiki/Necker_cube). The model was inspired by a description in "Schemata and Sequential Thought Processes in PDP Models" D. E. Rumelhart, P. Smolensky, J. 1. McClelland and G. E. Hinton, chapter 14 in *Parallel Distributed Processing, Vol. 2: Psychological and Biological Models*, eds. James L. McLelland, David E. Rumelhart.
+
+The pattern of light that comes into the eye and hits the back of the retina is essentially two-dimensional, yet we experience a three-dimensional world.  So our visual system has to reconstruct representation of a three-dimensional world from two-dimensional data.  Various sorts of information in this data gets used by the visual system in our eye, optic nerve, and brain in this process.  The Necker cube illustrations one aspect of this process: they eye sees an object in the world that is literally two-dimensional, but that we tend to experience as three-dimensional.  There are two
+ways to do this, experiencing a 3-D cube from two different perspectives.  You can think of these as two different "hypotheses" that the visual system decides between when responding to the pattern of light coming from the 2-D Necker cube.
+
+This program models a process by which these two different hypotheses compete with each other.  It is a model of a process by which a visual system might work out a consistent
+3-D construction of a cube.
 
 ## HOW IT WORKS
 
@@ -521,19 +527,34 @@ it is updated.
 RESTORE DEFAULT PARAMETERS resets learning-rate and external-input to default values
 specified in the code.
 
+The SHOW-NODES and SHOW-NEG-LINKS switches can be used to hide the node circles and
+negative links, so that you can see the two Necker cubes without visual interference.
+
+SHOW-ACTIVATIONS allows you to see the activation values for each node.  The location
+of these numbers on the screen is not ideal.  NetLogo makes it a bit difficult to
+put them in a place that would be easier to read.  (If this is important to you,
+let me know, and I'll consider fixing the problem.)
 
 
 ## THINGS TO NOTICE
 
-
+NetLogo shows the number of ticks,, i.e. cycles, that it takes to settle the network.  Notice that this number varies from run to run depending on the initial random activation values.
 
 ## THINGS TO TRY
 
-
+You can slow down or speed up the settling process using NetLogo's speed slider.  This
+doesn't affect the process, but it might allow you to watch what happens during settling,
+or to focus on the end result.
 
 
 ## CREDITS AND REFERENCES
 
+As noted above, this model was inspired by a description in "Schemata and Sequential Thought Processes in PDP Models" D. E. Rumelhart, P. Smolensky, J. 1. McClelland and G. E. Hinton, chapter 14 in *Parallel Distributed Processing, Vol. 2: Psychological and Biological Models*, eds. James L. McLelland, David E. Rumelhart.  I started thinking
+about writing this to help students understand a less detailed description in Keith
+Holyoak and Paul Thagard's *Mental Leaps: Analogy in Creative Thought*, MIT Press 1995.
+I was inspired by a Java applet that A. D. Marshall at Cardiff University had made
+available on the web previously.  This is no longer available, though--no doubt partly
+because Java applets are considered obsolete and potentially dangerous.
 
 ## HOW TO CITE
 
