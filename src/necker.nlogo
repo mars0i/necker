@@ -34,6 +34,8 @@ globals [
   positive-link-weight ; needs to be smaller than neg link weight
   negative-link-weight
   min-activation-change ; stop settling if change is < this in all nodes
+  default-learning-rate
+  default-external-input
 ]
 
 links-own [ weight ] ; links between nodes
@@ -58,15 +60,15 @@ to setup
   setup-constants
   ask patches [ set pcolor bg-color ]
   setup-cube-network ; sets left-cube, right-cube
-  update-from-toggles
+  update-from-ui-controls
   ;ask perceptron [ compute-activation ]
   reset-ticks
 end
 
 ;; marshall
 to go
-  update-from-toggles
   settle-network
+  update-from-ui-controls ; run after settle-network to get latest weights, and before stopping
   if settled? [stop]
   tick
 end
@@ -91,7 +93,9 @@ to setup-constants
   set surface-fill-color 9.7
   set front-label-color black
   set base-link-thickness 2
-  set min-activation-change 0.0001
+  set min-activation-change 0.00001
+  set default-learning-rate 0.5
+  set default-external-input 0.0001
   set negative-link-weight -1       ; if equal size, paradoxical perceptions are possible
   set positive-link-weight (2 / 3)  ; abs val needs to be less than for neg link weight
   ; "For purposes of this example, the strengths of connections have been arranged so that two negative inputs
@@ -99,7 +103,7 @@ to setup-constants
 
 end
 
-to update-from-toggles
+to update-from-ui-controls
   ifelse show-neg-links
     [ ask links with [weight < 0] [show-link] ]
     [ ask links with [weight < 0] [hide-link] ]
@@ -107,6 +111,16 @@ to update-from-toggles
   ifelse show-nodes
     [ ask nodes [show-turtle] ]
     [ ask nodes [hide-turtle] ]
+
+  ifelse show-weights
+    [ ask nodes [set label (precision activation 2)] ]
+    [ ask nodes [set label ""] ]
+end
+
+;; reset of UI-controlled parameters to sane defaults
+to set-default-params
+  set learning-rate default-learning-rate
+  set external-input default-external-input
 end
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -121,9 +135,9 @@ to settle-network
         set prev-activation activation
         let new-val activation + ( learning-rate * ([weight] of myself) * ([activation] of asking-node) ) + external-input
         set activation max (list -1 (min (list 1 new-val)))
+        update-node-color self
       ]
     ]
-    update-node-color self
   ]
 end
 
@@ -205,6 +219,7 @@ to-report create-a-node [x y]
   hatch-nodes 1 [
     set activation (random-float 2) - 1
     update-node-color self
+    set label-color black
     set size 15
     setxy x y
     set new-node self
@@ -342,9 +357,9 @@ to fill-surface [surface-color lower-left-corner-node upper-right-corner-node] ;
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
-172
+175
 10
-741
+744
 300
 -1
 -1
@@ -403,25 +418,25 @@ NIL
 0
 
 SLIDER
-6
-86
-162
-120
+5
+80
+161
+113
 learning-rate
 learning-rate
 0.0
 1.0
-0.4
+0.5
 1.0E-4
 1
 NIL
 HORIZONTAL
 
 SWITCH
-7
-233
-154
-267
+6
+260
+152
+294
 show-weights
 show-weights
 1
@@ -447,9 +462,9 @@ NIL
 
 SWITCH
 6
-197
-155
-231
+225
+152
+259
 show-neg-links
 show-neg-links
 0
@@ -457,10 +472,10 @@ show-neg-links
 -1000
 
 SWITCH
-7
-162
-153
-196
+5
+190
+151
+223
 show-nodes
 show-nodes
 0
@@ -468,10 +483,10 @@ show-nodes
 -1000
 
 SLIDER
-6
-121
-163
-155
+5
+116
+162
+149
 external-input
 external-input
 0
@@ -481,6 +496,23 @@ external-input
 1
 NIL
 HORIZONTAL
+
+BUTTON
+5
+154
+165
+188
+restore default parameters
+set-default-params
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
 
 @#$#@#$#@
 To be revised.
