@@ -141,6 +141,11 @@ to settle-network
   ]
 end
 
+;; marshall
+to update-node-color [a-node]
+  ask a-node [set color (rgb (255 * (- activation)) (175 * activation) (255 * activation))]
+end
+
 to-report settled?
   report all? nodes [ (abs (activation - prev-activation)) < min-activation-change ]
 end
@@ -226,12 +231,6 @@ to-report create-a-node [x y]
   ]
   report new-node
 end
-
-;; marshall
-to update-node-color [a-node]
-  ask a-node [set color (rgb (255 * (- activation)) (175 * activation) (255 * activation))]
-end
-
 
 ;; marshall
 ;; The back-front angular shift will be done separately
@@ -420,8 +419,8 @@ NIL
 SLIDER
 5
 80
-161
-113
+165
+114
 learning-rate
 learning-rate
 0.0
@@ -444,9 +443,9 @@ show-weights
 -1000
 
 BUTTON
-83
+86
 45
-160
+163
 79
 go once
 go
@@ -485,8 +484,8 @@ show-nodes
 SLIDER
 5
 116
-162
-149
+166
+150
 external-input
 external-input
 0
