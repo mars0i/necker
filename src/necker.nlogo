@@ -449,7 +449,7 @@ SWITCH
 258
 show-neg-links
 show-neg-links
-0
+1
 1
 -1000
 
@@ -506,13 +506,23 @@ NIL
 This is a simple "constraint satisfaction" neural network model of a perceptual process for interpreting a 2-D image known as a Necker cube as three-dimensional
 (https://en.wikipedia.org/wiki/Necker_cube). The model was inspired by a description in "Schemata and Sequential Thought Processes in PDP Models" D. E. Rumelhart, P. Smolensky, J. 1. McClelland and G. E. Hinton, chapter 14 in *Parallel Distributed Processing, Vol. 2: Psychological and Biological Models*, eds. James L. McLelland, David E. Rumelhart.
 
-The pattern of light that comes into the eye and hits the back of the retina is essentially two-dimensional, yet we experience a three-dimensional world.  So our visual system has to reconstruct representation of a three-dimensional world from two-dimensional data.  Various sorts of information in this data gets used by the visual system in our eye, optic nerve, and brain in this process.  The Necker cube illustrations one aspect of this process: they eye sees an object in the world that is literally two-dimensional, but that we tend to experience as three-dimensional.  There are two
-ways to do this, experiencing a 3-D cube from two different perspectives.  You can think of these as two different "hypotheses" that the visual system decides between when responding to the pattern of light coming from the 2-D Necker cube.
+The pattern of light that comes into the eye and hits the back of the retina is essentially two-dimensional, yet we experience a three-dimensional world.  So our visual system has to reconstruct representation of a three-dimensional world from two-dimensional data.  Various sorts of information in this data gets used by the visual system in our eye, optic nerve, and brain in this process.  The Necker cube illustrations one aspect of this process: they eye sees an object in the world that is literally two-dimensional, but that we tend to experience as three-dimensional.  There are two ways to do this, experiencing a 3-D cube from two different perspectives.  You can think of these as two different "hypotheses" that the visual system decides between when responding to the pattern of light coming from the 2-D Necker cube.
 
 This program models a process by which these two different hypotheses compete with each other.  It is a model of a process by which a visual system might work out a consistent
 3-D construction of a cube.
 
+
 ## HOW IT WORKS
+
+### Necker cubes 
+
+First, try turning off the *show-nodes* and *show-neg-links* options on the left side of the NetLogo model, and then click on *setup*.  This shows two Necker cubes, one on the left, and one on the right.  For the moment, try to see each as a two-dimensional drawing, consistneting of lines on the screen.  Each image consists of two overlapping squares, one of which is shifted diagonally from the other, and four diagonal lines connecting the corners of the two squares.  
+
+However, our visual systems tends to see each of these two-dimensional objects as if each was a three-dimensional cube.  There are two different ways that the human visual system turns this kind of two-dimensional object into something that is experienced as cube.  The dashed lines, the label "front", and the shaded front square, the images suggest those two ways of seeing the diagrams.  The left image is supposed to suggest seeing the upper right square as the front of the cube, and the lower parallelogram as its bottom.  The right images is intended to suggest that the lower left square is the front, with the upper parallelogram as the top of the square.  However, the pattern of two overlapping squares with diagonal lines connecting their corners is the same in both of the images.
+
+### Constraint satisfaction links
+
+Now turn on *show-nodes*, and click *setup* again.
 
 
 
@@ -520,28 +530,19 @@ This program models a process by which these two different hypotheses compete wi
 
 SETUP sets each node's activation value to a random number between -1 and 1.
 
-GO ONCE performs one iteration of settling--that is, each node's activation value is
-adjusted due to the influence of the activation values of the nodes to which it is
-connected, and the weights of the links between nodes.
+GO ONCE performs one iteration of settling--that is, each node's activation value is adjusted due to the influence of the activation values of the nodes to which it is connected, and the weights of the links between nodes.
 
-GO does the same thing as GO ONCE, but does it repeatedly until the activation values
-of the nodes stop changing significantly.
+GO does the same thing as GO ONCE, but does it repeatedly until the activation values of the nodes stop changing significantly.
 
 LEARNING-RATE specifies how much each node influences the nodes to which it is linked.
 
-EXTERNAL-INPUT specifies a small number that is added to activation of each node when
-it is updated.
+EXTERNAL-INPUT specifies a small number that is added to activation of each node when it is updated.
 
-RESTORE DEFAULT PARAMETERS resets learning-rate and external-input to default values
-specified in the code.
+RESTORE DEFAULT PARAMETERS resets learning-rate and external-input to default values specified in the code.
 
-The SHOW-NODES and SHOW-NEG-LINKS switches can be used to hide the node circles and
-negative links, so that you can see the two Necker cubes without visual interference.
+The SHOW-NODES and SHOW-NEG-LINKS switches can be used to hide the node circles and negative links, so that you can see the two Necker cubes without visual interference.
 
-SHOW-ACTIVATIONS allows you to see the activation values for each node.  The location
-of these numbers on the screen is not ideal.  NetLogo makes it a bit difficult to
-put them in a place that would be easier to read.  (If this is important to you,
-let me know, and I'll consider fixing the problem.)
+SHOW-ACTIVATIONS allows you to see the activation values for each node.  The location of these numbers on the screen is not ideal.  NetLogo makes it a bit difficult to put them in a place that would be easier to read.  (If this is important to you, let me know, and I'll consider fixing the problem.)
 
 
 ## THINGS TO NOTICE
@@ -550,19 +551,12 @@ NetLogo shows the number of ticks,, i.e. cycles, that it takes to settle the net
 
 ## THINGS TO TRY
 
-You can slow down or speed up the settling process using NetLogo's speed slider.  This
-doesn't affect the process, but it might allow you to watch what happens during settling,
-or to focus on the end result.
+You can slow down or speed up the settling process using NetLogo's speed slider.  This doesn't affect the process, but it might allow you to watch what happens during settling, or to focus on the end result.
 
 
 ## CREDITS AND REFERENCES
 
-As noted above, this model was inspired by a description in "Schemata and Sequential Thought Processes in PDP Models" D. E. Rumelhart, P. Smolensky, J. 1. McClelland and G. E. Hinton, chapter 14 in *Parallel Distributed Processing, Vol. 2: Psychological and Biological Models*, eds. James L. McLelland, David E. Rumelhart.  I started thinking
-about writing this to help students understand a less detailed description in Keith
-Holyoak and Paul Thagard's *Mental Leaps: Analogy in Creative Thought*, MIT Press 1995.
-I was inspired by a Java applet that A. D. Marshall at Cardiff University had made
-available on the web previously.  This is no longer available, though--no doubt partly
-because Java applets are considered obsolete and potentially dangerous.
+As noted above, this model was inspired by a description in "Schemata and Sequential Thought Processes in PDP Models" D. E. Rumelhart, P. Smolensky, J. 1. McClelland and G. E. Hinton, chapter 14 in *Parallel Distributed Processing, Vol. 2: Psychological and Biological Models*, eds. James L. McLelland, David E. Rumelhart.  I started thinking about writing this to help students understand a less detailed description in Keith Holyoak and Paul Thagard's *Mental Leaps: Analogy in Creative Thought*, MIT Press 1995.  I was inspired by a Java applet that A. D. Marshall at Cardiff University had made available on the web previously.  This is no longer available, though--no doubt partly because Java applets are considered obsolete and potentially dangerous.
 
 ## COPYRIGHT AND LICENSE
 
