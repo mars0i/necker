@@ -133,8 +133,8 @@ to settle-network
 end
 
 to update-node-color [a-node]
-  ask a-node [ set color ( rgb (min (list 255 (50 + (255 * (- activation)))))
-                               (100 * activation)
+  ask a-node [ set color ( rgb (min (list 255 (30 + (255 * (- activation)))))
+                               (150 * activation)
                                (min (list 255 (50 + (255 * activation)))) ) ]
 end
 
