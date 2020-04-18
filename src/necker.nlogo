@@ -133,7 +133,9 @@ to settle-network
 end
 
 to update-node-color [a-node]
-  ask a-node [set color (rgb (min (list 255 (50 + (255 * (- activation))))) (100 * activation) (min (list 255 (50 + (255 * activation))))) ]
+  ask a-node [ set color ( rgb (min (list 255 (50 + (255 * (- activation)))))
+                               (100 * activation)
+                               (min (list 255 (50 + (255 * activation)))) ) ]
 end
 
 to-report settled?
@@ -502,11 +504,9 @@ NIL
 
 
 
-## WHAT IS IT?
+## WHAT IS IT? (Overview)
 
-This is a simple "constraint satisfaction" neural network model of a perceptual process for interpreting a 2-D image known as a Necker cube as three-dimensional
-(https://en.wikipedia.org/wiki/Necker_cube). The model was inspired by a description in "Schemata and Sequential Thought Processes in PDP Models" D. E. Rumelhart, P. Smolensky, J. 1. McClelland and G. E. Hinton, chapter 14 in *Parallel Distributed Processing, Vol. 2: Psychological and Biological Models*, eds. James L. McLelland, David E. Rumelhart.
-
+This is a "constraint satisfaction" neural network model.  It is a simple mode of a perceptual process for interpreting a 2-D image known as a Necker cube as three-dimensional (https://en.wikipedia.org/wiki/Necker_cube). See the end of this document for information on where the idea for the model came from.  
 The pattern of light that comes into the eye and hits the back of the retina is essentially two-dimensional, yet we experience a three-dimensional world.  So our visual system has to reconstruct representation of a three-dimensional world from two-dimensional data.  In a sense, what the visual system is doing is taking two-dimensional data, and using it to construct a "theory" about the structure of the three-dimensional world that light is reflecting off of.  
 
 Various sorts of information in this data gets used by the visual system in our eye, optic nerve, and brain in this process.  The Necker cube illustrations one aspect of this process: they eye sees an object in the world that is literally two-dimensional, but that we tend to experience as three-dimensional.  There are two ways to do this, experiencing a 3-D cube from two different perspectives.  Just before a Necker cube is experienced as three-dimensional, or when the perception of the diagram "flips" from one perspective to another, we can consider the visual system to be entertaining two different hypotheses about the three-dimensional structure represented by the Necker cube figure.
@@ -515,7 +515,9 @@ This program models a process by which these two different hypotheses compete wi
 3-D construction of a cube.
 
 
-## HOW IT WORKS
+## WHAT IS IT? (Tutorial)
+
+This section presents the ideas behind this model in a way that should be useful for people who are unfamiliar with the ideas involved.
 
 ### Necker cubes 
 
@@ -552,6 +554,9 @@ Now set *show-neg-links* on.  *show-nodes* should be on as well.  Click on *setu
 [THIS SECTION IS NOT FINISHED]
 
 
+## HOW IT WORKS
+
+
 ## HOW TO USE IT
 
 SETUP sets each node's activation value to a random number between -1 and 1.
@@ -570,23 +575,34 @@ The SHOW-NODES and SHOW-NEG-LINKS switches can be used to hide the node circles 
 
 SHOW-ACTIVATIONS allows you to see the activation values for each node.  The location of these numbers on the screen is not ideal.  NetLogo makes it a bit difficult to put them in a place that would be easier to read.  (If this is important to you, let me know, and I'll consider fixing the problem.)
 
+Notice that as with most NetLogo models, you can slow down or speed up the settling process using NetLogo's speed slider.  This doesn't affect the process, but it might allow you to watch what happens during settling, or to focus on the end result.
+
 
 ## THINGS TO NOTICE
 
 NetLogo shows the number of ticks,, i.e. cycles, that it takes to settle the network.  Notice that this number varies from run to run depending on the initial random activation values.
 
+Often, the network will settle in one or two ticks.  Sometimes it gets into a state in which each subnetwork contains a mix of positive and negative nodes that remains somewhat stable for a while.  
+
+If the colors seem somewhat stable but you see some of the activations changing--if the colors seem to be flashing a little--let the model run for while.  (You can speed it up with the speed slider if you want.)  It's likely that it will eventually settle.
+
+On the other hand, sometimes the model gets into a state that is "paradoxical"--in which each network is representing an incompatible mix of node values--and it will apparently remain that way forever.  This is rare, but it can happen.  If you don't see any of the nodes flashing, that may be what has happened.
+
 ## THINGS TO TRY
 
-You can slow down or speed up the settling process using NetLogo's speed slider.  This doesn't affect the process, but it might allow you to watch what happens during settling, or to focus on the end result.
 
 
 ## CREDITS AND REFERENCES
 
-As noted above, this model was inspired by a description in "Schemata and Sequential Thought Processes in PDP Models" D. E. Rumelhart, P. Smolensky, J. 1. McClelland and G. E. Hinton, chapter 14 in *Parallel Distributed Processing, Vol. 2: Psychological and Biological Models*, eds. James L. McLelland, David E. Rumelhart.  I started thinking about writing this to help students understand a less detailed description in Keith Holyoak and Paul Thagard's *Mental Leaps: Analogy in Creative Thought*, MIT Press 1995.  I was inspired by a Java applet that A. D. Marshall at Cardiff University had made available on the web previously.  This is no longer available, though--no doubt partly because Java applets are considered obsolete and potentially dangerous.
+This NetLogo model was written by Marshall Abrams, Associate Professor of Philosophy at the University of Alabama at Birmingham (http://members.logical.net/~marshall).  If there is a more recent version of this model, it can be found here: https://github.com/mars0i/necker .
+
+The model was inspired by a description in "Schemata and Sequential Thought Processes in PDP Models" D. E. Rumelhart, P. Smolensky, J. 1. McClelland and G. E. Hinton, chapter 14 in *Parallel Distributed Processing, Vol. 2: Psychological and Biological Models*, eds. James L. McLelland, David E. Rumelhart.
+
+I started thinking about writing this to help students understand a less detailed description in Keith Holyoak and Paul Thagard's *Mental Leaps: Analogy in Creative Thought*, MIT Press 1995.  I was also inspired by a Java applet that A. D. Marshall at Cardiff University had made available on the web previously.  This is no longer available, though--no doubt partly because Java applets are considered obsolete and potentially dangerous.
 
 ## COPYRIGHT AND LICENSE
 
-Copyright 2020 by Marshall Abrams.  Released under Gnu Public License version 3.0.
+Copyright 2020 by Marshall Abrams.  Released under GNU Public License version 3.0.
 Details can be found at https://www.gnu.org/licenses/gpl-3.0.en.html .
 @#$#@#$#@
 default
