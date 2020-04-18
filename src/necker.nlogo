@@ -213,6 +213,7 @@ to-report create-a-node [x y]
   let new-node "dummy-val"
   hatch-nodes 1 [
     set activation (random-float 2) - 1
+    ;set activation (random-float 1.2) - 0.6 ; keeping initial vals away from extrema is more interesting
     update-node-color self
     set label-color black
     set size 15
