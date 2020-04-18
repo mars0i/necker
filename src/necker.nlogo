@@ -421,7 +421,7 @@ SWITCH
 293
 show-activations
 show-activations
-0
+1
 1
 -1000
 
@@ -449,7 +449,7 @@ SWITCH
 258
 show-neg-links
 show-neg-links
-1
+0
 1
 -1000
 
@@ -506,7 +506,9 @@ NIL
 This is a simple "constraint satisfaction" neural network model of a perceptual process for interpreting a 2-D image known as a Necker cube as three-dimensional
 (https://en.wikipedia.org/wiki/Necker_cube). The model was inspired by a description in "Schemata and Sequential Thought Processes in PDP Models" D. E. Rumelhart, P. Smolensky, J. 1. McClelland and G. E. Hinton, chapter 14 in *Parallel Distributed Processing, Vol. 2: Psychological and Biological Models*, eds. James L. McLelland, David E. Rumelhart.
 
-The pattern of light that comes into the eye and hits the back of the retina is essentially two-dimensional, yet we experience a three-dimensional world.  So our visual system has to reconstruct representation of a three-dimensional world from two-dimensional data.  Various sorts of information in this data gets used by the visual system in our eye, optic nerve, and brain in this process.  The Necker cube illustrations one aspect of this process: they eye sees an object in the world that is literally two-dimensional, but that we tend to experience as three-dimensional.  There are two ways to do this, experiencing a 3-D cube from two different perspectives.  You can think of these as two different "hypotheses" that the visual system decides between when responding to the pattern of light coming from the 2-D Necker cube.
+The pattern of light that comes into the eye and hits the back of the retina is essentially two-dimensional, yet we experience a three-dimensional world.  So our visual system has to reconstruct representation of a three-dimensional world from two-dimensional data.  In a sense, what the visual system is doing is taking two-dimensional data, and using it to construct a "theory" about the structure of the three-dimensional world that light is reflecting off of.  
+
+Various sorts of information in this data gets used by the visual system in our eye, optic nerve, and brain in this process.  The Necker cube illustrations one aspect of this process: they eye sees an object in the world that is literally two-dimensional, but that we tend to experience as three-dimensional.  There are two ways to do this, experiencing a 3-D cube from two different perspectives.  Just before a Necker cube is experienced as three-dimensional, or when the perception of the diagram "flips" from one perspective to another, we can consider the visual system to be entertaining two different hypotheses about the three-dimensional structure represented by the Necker cube figure.
 
 This program models a process by which these two different hypotheses compete with each other.  It is a model of a process by which a visual system might work out a consistent
 3-D construction of a cube.
@@ -520,15 +522,33 @@ First, try turning off the *show-nodes* and *show-neg-links* options on the left
 
 However, our visual systems tends to see each of these two-dimensional objects as if each was a three-dimensional cube.  There are two different ways that the human visual system turns this kind of two-dimensional object into something that is experienced as cube.  The dashed lines, the label "front", and the shaded front square, the images suggest those two ways of seeing the diagrams.  The left image is supposed to suggest seeing the upper right square as the front of the cube, and the lower parallelogram as its bottom.  The right images is intended to suggest that the lower left square is the front, with the upper parallelogram as the top of the square.  However, the pattern of two overlapping squares with diagonal lines connecting their corners is the same in both of the images.
 
-### Positive constraint satisfaction links
+In order to construct a three-dimensional cube from a two-dimensional diagram (see above), a visual system has to interpret the data from each line and each corner in a way that consistently fits together as a hypothesis about a three-dimensional object.  For example, if the upper right corner of the diagram is the corner of the front surface of a cube, then the corner directly to its left must be the upper left corner of the front of the cube, and the lower left corner of the entire diagram must be the buttom left corner of the back surface of the cube.  So each consistent "hypothesis" about the three-dimensional object represented by the Necker figure can be understood as a series of smaller hypotheses about the locations of corners in space.  These smaller hypotheses have to fit together in a larger perceptual hypothesis.
+
+### Positive constraint links
 
 Now turn on *show-nodes*, and click *setup* again.  The colored circles at the corners of the squares are nodes, or abstract, idealized neurons in a "neural network" model.  The lines of the two Necker cubes now also represent links between these nodes.  
 
 Each node has a number called its *activation*, which is represented in the NetLogo model by color.  Activation values range from -1 to 1.  Red nodes have negative activations, with bright reds representing numbers closer to -1.  Blue nodes have positive activations, with bright blues representing numbers closer to 1.
 
-The links between nodes--i.e. the lines that are also edges of the Necker cubes--allow communication between nodes.  When you click on *go once*, each node will "try" to influence the nodes to which it is linked.  That is, the activation values of nodes that are connected to a node with negative activation will be pushed a little bit toward a lower value, and the nodes that are connected to a node with a positive vaue, with have their activations pushed a little bit higher.  The end result of clicking on *go once* is that each node gets a new activation value that is a sort of average of its old activation value and the activation values of all of the nodes to which it is linked.  (There is more to say, though--see the next sections.) 
+The links between nodes--i.e. the lines that are also edges of the Necker cubes--allow communication between nodes.  When you click on *go once*, each node will "try" to influence the nodes to which it is linked.  That is, the activation values of nodes that are connected to a node with negative activation will be pushed a little bit toward a lower value, and the nodes that are connected to a node with a positive vaue, with have their activations pushed a little bit higher.  The end result of clicking on *go once* is that each node gets a new activation value that is a sort of average of its old activation value and the activation values of all of the nodes to which it is linked.  (There is more to say, though--see the next sections.)
+
 We call this process "settling" the network.  *go once* causes one step of settling.  Clicking on *go* is like clicking on *go once* repeatedly.  With *go*, the activation values of the nodes will change bit by bit, until they don't change any more, at which point the *go* button will release itself, because the settling process has ended.
 
+### Subnetworks as perceptual hypotheses
+
+The left subnetwok---the one corresponding to the left Necker figure--is supposed to represent the hypothesis that the upper right square in the figure is the front of the cube, and the lower left square (two of whose sides are dashed) represents the back of the cube.
+
+The right subnetwork represents the hypothesis that the lower-right square is the front of the sube, and the upper left square (with two dashed sides) is the back of the cube.
+
+The model "decides" which perceptual hypothesis to adopt as "correct" if all of the nodes in that subnetwork acquire activation (blue) activation values of 1, and if all of the nodes in the other subnetwork acquire (red) activation values of -1.  
+
+We can think of the transmission of influences between connected nodes as pushing each node to adopt the same "hypothesis" as its neighbors.  When the network goes through the settlijng process, nodes with negative activations in effect tell their neighbors, "You should be negative, like me", while nodes with positive activations tell their neighbors, "You should be positive, like me."  When the network settles into a steady state, a consensus has been reached by all of the nodes.
+
+### Negative constraint links
+
+Now set *show-neg-links* on.  *show-nodes* should be on as well.  Click on *setup*.  The colors of nodes will change, because *setup* causes new random activations to be assigned to them. In addition, you should now see a number of red lines connecting nodes in the left subnetwork to nodes in the right subnetwork.
+
+[THIS SECTION IS NOT FINISHED]
 
 
 ## HOW TO USE IT
