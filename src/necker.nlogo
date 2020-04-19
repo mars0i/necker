@@ -118,13 +118,16 @@ end
 ;; Code to run the network
 
 to settle-network
+  ask nodes [set prev-activation activation] ; do this first to allow updates to be effectively simultaneous
+
   ask nodes [
     let asking-node self
     ask my-constraints [
       ask other-end [
-        ;print [weight] of myself ; DEBUG
-        set prev-activation activation
-        let new-val activation + ( learning-rate * ([weight] of myself) * ([activation] of asking-node) ) + external-input
+        ;; we update from prev-activation so that no new activation depends on an already-modified nactivation
+        let new-val prev-activation +
+                    ( learning-rate * ([weight] of myself) * ([prev-activation] of asking-node) ) +
+                    external-input
         set activation max (list -1 (min (list 1 new-val)))
         update-node-color self
       ]
@@ -582,7 +585,7 @@ Notice that as with most NetLogo models, you can slow down or speed up the settl
 
 NetLogo shows the number of ticks,, i.e. cycles, that it takes to settle the network.  Notice that this number varies from run to run depending on the initial random activation values.
 
-Often, the network will settle in one or two ticks.  Sometimes it gets into a state in which each subnetwork contains a mix of positive and negative nodes that remains somewhat stable for a while.  
+Often, the network will settle in a few ticks.  Sometimes it gets into a state in which each subnetwork contains a mix of positive and negative nodes that remains somewhat stable for a while.  
 
 If the colors seem somewhat stable but you see some of the activations changing--if the colors seem to be flashing a little--let the model run for while.  (You can speed it up with the speed slider if you want.)  It's likely that it will eventually settle.
 
