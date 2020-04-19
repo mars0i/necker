@@ -19,11 +19,13 @@ globals [
   surface-fill-color  ; when we paint the back of a cube
   front-label-color   ; color of "front" labeled near front of cube
   base-link-thickness
-  positive-link-weight ; needs to be smaller than neg link weight
-  negative-link-weight
   min-activation-change ; stop settling if change is < this in all nodes
   default-learning-rate
   default-external-input
+  default-weight-ratio
+  default-weight-size
+  positive-link-weight ; needs to be smaller than neg link weight
+  negative-link-weight
 ]
 
 ;; Functionally, all links/constraints will be treated as
@@ -87,8 +89,10 @@ to setup-constants
   set min-activation-change 0.00001
   set default-learning-rate 1.00
   set default-external-input 0.00001
-  set negative-link-weight -1       ; if equal size, paradoxical perceptions are possible
-  set positive-link-weight (2 / 3)  ; abs val needs to be less than for neg link weight
+  set default-weight-ratio 0.6667
+  set default-weight-size 0.5
+  set negative-link-weight -1 * weight-size
+  set positive-link-weight weight-ratio * weight-size
   ; "For purposes of this example, the strengths of connections have been arranged so that two negative inputs
   ; exactly balance three positive inputs." (p. 10 in Rumelhart et al.--see Info tab)
 
@@ -112,6 +116,8 @@ end
 to set-default-params
   set learning-rate default-learning-rate
   set external-input default-external-input
+  set weight-ratio default-weight-ratio
+  set weight-size default-weight-size
 end
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -132,6 +138,21 @@ to settle-network
         update-node-color self
       ]
     ]
+  ]
+end
+
+to new-settle-network
+  ask nodes [set prev-activation activation] ; do this first to allow updates to be effectively simultaneous
+
+  ask nodes [
+    let net-input 0
+    ask my-constraints [
+      ask other-end [
+        set net-input net-input +  [weight] of myself * prev-activation + external-input
+      ]
+      ;set activation prev-activation * ifelse-value (net-input > 0) [net-input *
+    ]
+    update-node-color self
   ]
 end
 
@@ -421,10 +442,10 @@ NIL
 HORIZONTAL
 
 SWITCH
-5
-260
-152
-293
+6
+332
+153
+365
 show-activations
 show-activations
 1
@@ -449,10 +470,10 @@ NIL
 0
 
 SWITCH
-5
-225
-151
-258
+6
+297
+152
+330
 show-neg-links
 show-neg-links
 0
@@ -460,10 +481,10 @@ show-neg-links
 -1000
 
 SWITCH
-5
-190
-151
-223
+6
+262
+152
+295
 show-nodes
 show-nodes
 0
@@ -486,10 +507,10 @@ NIL
 HORIZONTAL
 
 BUTTON
-5
-152
-167
-187
+6
+224
+168
+259
 restore default parameters
 set-default-params
 NIL
@@ -501,6 +522,36 @@ NIL
 NIL
 NIL
 1
+
+SLIDER
+5
+150
+168
+184
+weight-ratio
+weight-ratio
+0
+1
+0.6667
+0.0001
+1
+NIL
+HORIZONTAL
+
+SLIDER
+5
+184
+168
+218
+weight-size
+weight-size
+0.01
+1
+0.5
+0.01
+1
+NIL
+HORIZONTAL
 
 @#$#@#$#@
 (In progress.)
