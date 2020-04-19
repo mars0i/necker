@@ -90,7 +90,7 @@ to setup-constants
   set default-learning-rate 1.00
   set default-external-input 0.00001
   set default-weight-ratio 0.6667
-  set default-weight-size 0.5
+  set default-weight-size 0.1  ; s/b <= 0.25, i.e. s.t. 2 * neg-weight + 3 * 2/3 * pos-weight <= 1
   set negative-link-weight -1 * weight-size
   set positive-link-weight negative-link-weight * -1 * weight-ratio
   ; "For purposes of this example, the strengths of connections have been arranged so that two negative inputs
@@ -123,7 +123,7 @@ end
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Code to run the network
 
-to settle-network
+to old-settle-network
   ask nodes [set prev-activation activation] ; do this first to allow updates to be effectively simultaneous
 
   ask nodes [
@@ -141,7 +141,7 @@ to settle-network
   ]
 end
 
-to new-settle-network
+to settle-network
   ask nodes [set prev-activation activation] ; do this first to allow updates to be effectively simultaneous
 
   ask nodes [
@@ -155,8 +155,10 @@ to new-settle-network
                                [1 - prev-activation]
                                [prev-activation - -1]
     set activation prev-activation + net-input * activation-distance
+    if activation > 1  [set activation 1]
+    if activation < -1 [set activation -1]
     update-node-color self
-    print (list prev-activation activation net-input) ; DEBUG
+    ;print (list prev-activation activation net-input) ; DEBUG
   ]
 end
 
@@ -446,13 +448,13 @@ NIL
 HORIZONTAL
 
 SWITCH
-6
-332
-153
-365
+478
+302
+625
+335
 show-activations
 show-activations
-1
+0
 1
 -1000
 
@@ -474,10 +476,10 @@ NIL
 0
 
 SWITCH
-6
-297
-152
-330
+328
+303
+474
+336
 show-neg-links
 show-neg-links
 0
@@ -485,10 +487,10 @@ show-neg-links
 -1000
 
 SWITCH
-6
-262
-152
-295
+176
+303
+322
+336
 show-nodes
 show-nodes
 0
@@ -550,8 +552,8 @@ SLIDER
 weight-size
 weight-size
 0.01
-1
-0.5
+0.25
+0.1
 0.01
 1
 NIL
