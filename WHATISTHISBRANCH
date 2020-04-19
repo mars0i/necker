@@ -1,0 +1,7 @@
+Up until 4/19, I recorded meaningful snapshots of necker.nlogo
+as src/neckerV?.nlogo rather than using git branches.  (I didn't
+want to merely trust to git history; there are too many versions
+there.)
+
+Now I am putting aside these old versions in a separate branch.
+I'll delete them from master.
