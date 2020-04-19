@@ -594,6 +594,12 @@ On the other hand, sometimes the model gets into a state that is "paradoxical"--
 ## THINGS TO TRY
 
 
+## CODE NOTES
+
+Most of the source code merely sets up the network.  This requires a bit of code because there are 16 nodes and 40 constraint links.  Each of these 56 items has a particular meaning and function, and each needs to be displayed on the screen in a particular way.  Many of the global variables are needed only for the setup process.
+
+The code that actually runs the network consists of about 50 lines of code, all appearing before the setup code (which is marked as such).  To understand what is happening within the network, you can start by reading those relatively few lines.  I suggest starting with the `go` routine, then skipping down to `settle-network`.
+
 
 ## CREDITS AND REFERENCES
 
