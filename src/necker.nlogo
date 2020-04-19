@@ -20,7 +20,7 @@ globals [
   front-label-color   ; color of "front" labeled near front of cube
   base-link-thickness
   min-activation-change ; stop settling if change is < this in all nodes
-  default-learning-rate
+  ;default-learning-rate
   default-external-input
   default-weight-ratio
   default-weight-size
@@ -87,7 +87,7 @@ to setup-constants
   set front-label-color black
   set base-link-thickness 2
   set min-activation-change 0.00001
-  set default-learning-rate 1.00
+  ;set default-learning-rate 1.00
   set default-external-input 0.00001
   set default-weight-ratio 0.6667
   set default-weight-size 0.1  ; s/b <= 0.25, i.e. s.t. 2 * neg-weight + 3 * 2/3 * pos-weight <= 1
@@ -114,7 +114,7 @@ end
 
 ;; reset of UI-controlled parameters to sane defaults
 to set-default-params
-  set learning-rate default-learning-rate
+  ;set learning-rate default-learning-rate
   set external-input default-external-input
   set weight-ratio default-weight-ratio
   set weight-size default-weight-size
@@ -123,23 +123,23 @@ end
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Code to run the network
 
-to old-settle-network
-  ask nodes [set prev-activation activation] ; do this first to allow updates to be effectively simultaneous
-
-  ask nodes [
-    let asking-node self
-    ask my-constraints [
-      ask other-end [
-        ;; we update from prev-activation so that no new activation depends on an already-modified nactivation
-        let new-val prev-activation +
-                    ( learning-rate * ([weight] of myself) * ([prev-activation] of asking-node) ) +
-                    external-input
-        set activation max (list -1 (min (list 1 new-val)))
-        update-node-color self
-      ]
-    ]
-  ]
-end
+;to old-settle-network
+;  ask nodes [set prev-activation activation] ; do this first to allow updates to be effectively simultaneous
+;
+;  ask nodes [
+;    let asking-node self
+;    ask my-constraints [
+;      ask other-end [
+;        ;; we update from prev-activation so that no new activation depends on an already-modified nactivation
+;        let new-val prev-activation +
+;                    ( learning-rate * ([weight] of myself) * ([prev-activation] of asking-node) ) +
+;                    external-input
+;        set activation max (list -1 (min (list 1 new-val)))
+;        update-node-color self
+;      ]
+;    ]
+;  ]
+;end
 
 to settle-network
   ask nodes [set prev-activation activation] ; do this first to allow updates to be effectively simultaneous
@@ -155,8 +155,6 @@ to settle-network
                                [1 - prev-activation]
                                [prev-activation - -1]
     set activation prev-activation + net-input * activation-distance
-    if activation > 1  [set activation 1]
-    if activation < -1 [set activation -1]
     update-node-color self
     ;print (list prev-activation activation net-input) ; DEBUG
   ]
@@ -399,10 +397,10 @@ ticks
 30.0
 
 BUTTON
-5
-10
-80
-43
+6
+9
+81
+42
 setup
 setup
 NIL
@@ -416,10 +414,10 @@ NIL
 1
 
 BUTTON
-5
-45
-80
-78
+6
+41
+81
+74
 go
 go
 T
@@ -432,26 +430,11 @@ NIL
 NIL
 0
 
-SLIDER
-5
-80
-165
-113
-learning-rate
-learning-rate
-0.0
-1.0
-1.0
-1.0E-4
-1
-NIL
-HORIZONTAL
-
 SWITCH
-478
-302
-625
-335
+5
+277
+152
+310
 show-activations
 show-activations
 0
@@ -459,10 +442,10 @@ show-activations
 -1000
 
 BUTTON
-86
-45
-163
-79
+83
+41
+160
+75
 go once
 go
 NIL
@@ -476,10 +459,10 @@ NIL
 0
 
 SWITCH
-328
-303
-474
-336
+5
+245
+151
+278
 show-neg-links
 show-neg-links
 0
@@ -487,10 +470,10 @@ show-neg-links
 -1000
 
 SWITCH
-176
-303
-322
-336
+6
+210
+152
+243
 show-nodes
 show-nodes
 0
@@ -498,15 +481,15 @@ show-nodes
 -1000
 
 SLIDER
-5
-116
-166
-149
+6
+76
+167
+109
 external-input
 external-input
 0
 0.0002
-1.0E-5
+2.0E-4
 0.00001
 1
 NIL
@@ -514,9 +497,9 @@ HORIZONTAL
 
 BUTTON
 6
-224
+176
 168
-259
+211
 restore default parameters
 set-default-params
 NIL
@@ -530,10 +513,10 @@ NIL
 1
 
 SLIDER
-5
-150
-168
-184
+6
+110
+169
+144
 weight-ratio
 weight-ratio
 0
@@ -545,15 +528,15 @@ NIL
 HORIZONTAL
 
 SLIDER
-5
-184
-168
-218
+6
+143
+169
+177
 weight-size
 weight-size
 0.01
 0.25
-0.1
+0.25
 0.01
 1
 NIL
