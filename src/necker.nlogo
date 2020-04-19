@@ -92,7 +92,7 @@ to setup-constants
   set default-weight-ratio 0.6667
   set default-weight-size 0.5
   set negative-link-weight -1 * weight-size
-  set positive-link-weight weight-ratio * weight-size
+  set positive-link-weight negative-link-weight * -1 * weight-ratio
   ; "For purposes of this example, the strengths of connections have been arranged so that two negative inputs
   ; exactly balance three positive inputs." (p. 10 in Rumelhart et al.--see Info tab)
 
@@ -145,14 +145,18 @@ to new-settle-network
   ask nodes [set prev-activation activation] ; do this first to allow updates to be effectively simultaneous
 
   ask nodes [
-    let net-input 0
+    let net-input 0 ; will sum weighted values of neighbors
     ask my-constraints [
       ask other-end [
-        set net-input net-input +  [weight] of myself * prev-activation + external-input
+        set net-input net-input + [weight] of myself * prev-activation + external-input
       ]
-      ;set activation prev-activation * ifelse-value (net-input > 0) [net-input *
     ]
+    let activation-distance ifelse-value (net-input > 0)
+                               [1 - prev-activation]
+                               [prev-activation - -1]
+    set activation prev-activation + net-input * activation-distance
     update-node-color self
+    print (list prev-activation activation net-input) ; DEBUG
   ]
 end
 
