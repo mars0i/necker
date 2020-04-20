@@ -86,7 +86,7 @@ to setup-constants
   set surface-fill-color 9.5
   set front-label-color black
   set base-link-thickness 2
-  set min-activation-change 0.00001
+  set min-activation-change 0.0000001
   ;set default-learning-rate 1.00
   set default-external-input 0.00001
   set default-weight-ratio 0.6667
@@ -123,25 +123,25 @@ end
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Code to run the network
 
-;to old-settle-network
-;  ask nodes [set prev-activation activation] ; do this first to allow updates to be effectively simultaneous
-;
-;  ask nodes [
-;    let asking-node self
-;    ask my-constraints [
-;      ask other-end [
-;        ;; we update from prev-activation so that no new activation depends on an already-modified nactivation
-;        let new-val prev-activation +
-;                    ( learning-rate * ([weight] of myself) * ([prev-activation] of asking-node) ) +
-;                    external-input
-;        set activation max (list -1 (min (list 1 new-val)))
-;        update-node-color self
-;      ]
-;    ]
-;  ]
-;end
-
 to settle-network
+  ask nodes [set prev-activation activation] ; do this first to allow updates to be effectively simultaneous
+
+  ask nodes [
+    let asking-node self
+    ask my-constraints [
+      ask other-end [
+        ;; we update from prev-activation so that no new activation depends on an already-modified nactivation
+        let new-val prev-activation +
+                    ([weight] of myself) * ([prev-activation] of asking-node) +
+                    external-input
+        set activation max (list -1 (min (list 1 new-val)))
+        update-node-color self
+      ]
+    ]
+  ]
+end
+
+to new-settle-network
   ask nodes [set prev-activation activation] ; do this first to allow updates to be effectively simultaneous
 
   ask nodes [
@@ -489,7 +489,7 @@ external-input
 external-input
 0
 0.0002
-2.0E-4
+1.0E-5
 0.00001
 1
 NIL
@@ -516,7 +516,7 @@ SLIDER
 6
 110
 169
-144
+143
 weight-ratio
 weight-ratio
 0
@@ -531,12 +531,12 @@ SLIDER
 6
 143
 169
-177
+176
 weight-size
 weight-size
 0.01
 0.25
-0.25
+0.1
 0.01
 1
 NIL
