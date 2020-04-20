@@ -21,7 +21,7 @@ globals [
   base-link-thickness
   min-activation-change ; stop settling if change is < this in all nodes
   ;default-learning-rate
-  default-external-input
+  default-external-input-wt
   default-weight-ratio
   default-weight-size
   positive-link-weight ; needs to be smaller than neg link weight
@@ -88,7 +88,7 @@ to setup-constants
   set base-link-thickness 2
   set min-activation-change 0.0000001
   ;set default-learning-rate 1.00
-  set default-external-input 0.00001
+  set default-external-input-wt 0.00001
   set default-weight-ratio 0.6667
   set default-weight-size 0.1  ; s/b <= 0.25, i.e. s.t. 2 * neg-weight + 3 * 2/3 * pos-weight <= 1
   set negative-link-weight -1 * weight-size
@@ -115,7 +115,7 @@ end
 ;; reset of UI-controlled parameters to sane defaults
 to set-default-params
   ;set learning-rate default-learning-rate
-  set external-input default-external-input
+  set external-input-wt default-external-input-wt
   set weight-ratio default-weight-ratio
   set weight-size default-weight-size
 end
@@ -133,7 +133,7 @@ to settle-network
         ;; we update from prev-activation so that no new activation depends on an already-modified nactivation
         let new-val prev-activation +
                     ([weight] of myself) * ([prev-activation] of asking-node) +
-                    external-input
+                    (external-input-wt * random-float 10)
         set activation max (list -1 (min (list 1 new-val)))
         update-node-color self
       ]
@@ -148,7 +148,7 @@ to new-settle-network
     let net-input 0 ; will sum weighted values of neighbors
     ask my-constraints [
       ask other-end [
-        set net-input net-input + [weight] of myself * prev-activation + external-input
+        set net-input net-input + [weight] of myself * prev-activation + external-input-wt
       ]
     ]
     let activation-distance ifelse-value (net-input > 0)
@@ -437,7 +437,7 @@ SWITCH
 310
 show-activations
 show-activations
-0
+1
 1
 -1000
 
