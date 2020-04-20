@@ -483,10 +483,10 @@ show-nodes
 SLIDER
 6
 76
-167
-109
-external-input
-external-input
+171
+110
+external-input-wt
+external-input-wt
 0
 0.0002
 1.0E-5
