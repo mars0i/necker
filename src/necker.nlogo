@@ -90,7 +90,7 @@ to setup-constants
   ;set default-learning-rate 1.00
   set default-external-input-wt 0.00001
   set default-weight-ratio 0.6667
-  set default-weight-size 0.1  ; s/b <= 0.25, i.e. s.t. 2 * neg-weight + 3 * 2/3 * pos-weight <= 1
+  set default-weight-size 0.5  ; 0.5 is better than 0.25, but s/b <= 0.25?, i.e. s.t. 2 * neg-weight + 3 * 2/3 * pos-weight <= 1
   set negative-link-weight -1 * weight-size
   set positive-link-weight negative-link-weight * -1 * weight-ratio
   ; "For purposes of this example, the strengths of connections have been arranged so that two negative inputs
@@ -133,7 +133,7 @@ to settle-network
         ;; we update from prev-activation so that no new activation depends on an already-modified nactivation
         let new-val prev-activation +
                     ([weight] of myself) * ([prev-activation] of asking-node) +
-                    (external-input-wt * random-float 10)
+                    external-input-wt  ; (external-input-wt * random-float 10)
         set activation max (list -1 (min (list 1 new-val)))
         update-node-color self
       ]
@@ -141,24 +141,28 @@ to settle-network
   ]
 end
 
-to new-settle-network
-  ask nodes [set prev-activation activation] ; do this first to allow updates to be effectively simultaneous
-
-  ask nodes [
-    let net-input 0 ; will sum weighted values of neighbors
-    ask my-constraints [
-      ask other-end [
-        set net-input net-input + [weight] of myself * prev-activation + external-input-wt
-      ]
-    ]
-    let activation-distance ifelse-value (net-input > 0)
-                               [1 - prev-activation]
-                               [prev-activation - -1]
-    set activation prev-activation + net-input * activation-distance
-    update-node-color self
-    ;print (list prev-activation activation net-input) ; DEBUG
-  ]
-end
+;; This is similar to the method in Rumelhart et al. chapter 14, vol. II of the PDP book.
+;; It's different because the values range from -1 to 1 rather than 0 to 1, and the update
+;; is effectively in in parallel, rather than sequentially updating nodes from others that
+;; have already been changed.
+;to pdp-settle-network
+;  ask nodes [set prev-activation activation] ; do this first to allow updates to be effectively simultaneous
+;
+;  ask nodes [
+;    let net-input 0 ; will sum weighted values of neighbors
+;    ask my-constraints [
+;      ask other-end [
+;        set net-input net-input + [weight] of myself * prev-activation + external-input-wt
+;      ]
+;    ]
+;    let activation-distance ifelse-value (net-input > 0)
+;                               [1 - prev-activation]
+;                               [prev-activation - -1]
+;    set activation prev-activation + net-input * activation-distance
+;    update-node-color self
+;    ;print (list prev-activation activation net-input) ; DEBUG
+;  ]
+;end
 
 to update-node-color [a-node]
   ask a-node [ set color ( rgb (min (list 255 (30 + (255 * (- activation)))))
@@ -465,7 +469,7 @@ SWITCH
 278
 show-neg-links
 show-neg-links
-0
+1
 1
 -1000
 
@@ -484,7 +488,7 @@ SLIDER
 6
 76
 171
-110
+109
 external-input-wt
 external-input-wt
 0
@@ -536,7 +540,7 @@ weight-size
 weight-size
 0.01
 0.25
-0.1
+0.5
 0.01
 1
 NIL
