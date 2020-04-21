@@ -615,11 +615,13 @@ So the gradual updating of the activation values of the nodes--the settling of t
 
 SETUP sets each node's activation value to a random number between -1 and 1.
 
-GO ONCE performs one iteration of settling--that is, each node's activation value is adjusted due to the influence of the activation values of the nodes to which it is connected, and the weights of the links between nodes.
+GO ONCE performs one iteration of settling.  That is, each node's activation value is adjusted due to the influence of the activation values of the nodes to which it is connected, and the weights of the links between nodes.
 
 GO does the same thing as GO ONCE, but does it repeatedly until the activation values of the nodes stop changing significantly.
 
-LEARNING-RATE specifies how much each node influences the nodes to which it is linked.
+WEIGHT-RATIO specifies the ratio of the absolute value of the weight on negative links to the weight on positive links.  This is set to 2/3 by default, so that, for example if the weight on a negative link is -1/2, the weight on a positive link will be 2/3 of 1/2, or 2/6 = 1/3.  The reason that the weight-ratio is normally set to 2/3 is that each node had three positive links and two negative links.  Since 3 * 2/3 = 2, this means that the net effect of the positive links will be balanced by the net effect of the negative links.
+
+WEIGHT-SIZE specifies the strengths of weights on negative links.  The weight on a negative link is -1 times *weight-size*.  The weight on a positive link is therefore *weight-size* times *weight-ratio*.
 
 EXTERNAL-INPUT specifies a small number that is added to activation of each node when it is updated.
 
