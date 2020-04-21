@@ -470,7 +470,7 @@ SWITCH
 278
 show-neg-links
 show-neg-links
-1
+0
 1
 -1000
 
@@ -494,7 +494,7 @@ external-input-wt
 external-input-wt
 0
 0.0002
-1.0E-5
+0.0
 0.00001
 1
 NIL
