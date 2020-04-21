@@ -599,7 +599,13 @@ We can think of the transmission of influences between connected nodes as pushin
 
 Now set *show-neg-links* on.  *show-nodes* should be on as well.  Click on *setup*.  The colors of nodes will change, because *setup* causes new random activations to be assigned to them. In addition, you should now see a number of red lines connecting nodes in the left subnetwork to nodes in the right subnetwork.
 
-[THIS SECTION IS NOT FINISHED]
+These lines represent negatively-weighted links between nodes in the two subnetworks that represent competing hypotheses about corners.  For example, the node that is the furthest lower left in the entire diagram is connected by a negative link to the node that is the most lower-left in the right hand subnetwork.  These are inconsistent corner hypotheses because the one from the left subnetwork represents that corner of the Necker cube figure as the back lower left corner of the cube, while the node to which it is connected represents that point in the Necker cube as the lower left corner of the front surface of the cube.  (Notice the shading and "front" labels again, if this is not clear.)
+
+Since these nodes represent competing, incompatible hypotheses, there is a red, negatively weighted link between these nodes.  This means that when one of the nodes has a positive value, it tends to push the other node to a negative value, and vice versa.
+
+The same lower-left node in the left-hand subnetwork is also connected by a diagonal red line to another node in the right-hand subnetwork.  The latter node represents the back lower left corner in the right hand subnetwork--but that is exactly the same corner that the lower left node in the left-hand subnetwork represents.  So these two nodes are linked by a negatively weighted link, too since they can't both be "right" about what is the back left corner of the cube.
+
+So the gradual updating of the activation values of the nodes--the settling of the network--is the result both of the positive links between nodes in the same subnetwork, and the negative links between competing nodes in the two subnetworks.
 
 
 ## HOW IT WORKS
