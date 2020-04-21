@@ -83,7 +83,7 @@ to setup-constants
   set pos-link-back-color black; 96 ; 90
   set neg-link-colors [14 15 16 24 25 125 126 135] ; neg links are hard to distinguish, so vary colors
   set num-neg-link-colors length neg-link-colors
-  set surface-fill-color 9.5
+  set surface-fill-color 9.25
   set front-label-color black
   set base-link-thickness 2
   set min-activation-change 0.0000001
