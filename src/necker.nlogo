@@ -144,8 +144,8 @@ end
 ;; This is similar to the method in Rumelhart et al. chapter 14, vol. II of the PDP book.
 ;; It's different because the values range from -1 to 1 rather than 0 to 1, and the update
 ;; is effectively in in parallel, rather than sequentially updating nodes from others that
-;; have already been changed.
-;to pdp-settle-network
+;; have already been changed.  However, this method often settles in a paradoxical state.
+;to settle-network
 ;  ask nodes [set prev-activation activation] ; do this first to allow updates to be effectively simultaneous
 ;
 ;  ask nodes [
@@ -159,6 +159,7 @@ end
 ;                               [1 - prev-activation]
 ;                               [prev-activation - -1]
 ;    set activation prev-activation + net-input * activation-distance
+;    ;set activation max (list -1 (min (list 1 activation)))
 ;    update-node-color self
 ;    ;print (list prev-activation activation net-input) ; DEBUG
 ;  ]
@@ -539,7 +540,7 @@ SLIDER
 weight-size
 weight-size
 0.01
-0.25
+1.0
 0.5
 0.01
 1
