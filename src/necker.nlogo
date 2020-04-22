@@ -467,9 +467,9 @@ NIL
 
 BUTTON
 6
-41
+48
 81
-74
+81
 go
 go
 T
@@ -483,10 +483,10 @@ NIL
 0
 
 SWITCH
-7
-277
-154
-310
+479
+273
+626
+306
 show-activations
 show-activations
 1
@@ -494,10 +494,10 @@ show-activations
 -1000
 
 BUTTON
-80
-40
-155
-74
+84
+48
+159
+82
 go once
 go
 NIL
@@ -511,10 +511,10 @@ NIL
 0
 
 SWITCH
-7
-244
-153
-277
+328
+273
+474
+306
 show-neg-links
 show-neg-links
 0
@@ -522,10 +522,10 @@ show-neg-links
 -1000
 
 SWITCH
-6
-210
-152
-243
+180
+272
+326
+305
 show-nodes
 show-nodes
 0
@@ -534,9 +534,9 @@ show-nodes
 
 SLIDER
 6
-76
+84
 170
-109
+117
 external-input-wt
 external-input-wt
 0
@@ -549,9 +549,9 @@ HORIZONTAL
 
 BUTTON
 6
-176
-168
-211
+190
+170
+226
 restore default parameters
 set-default-params
 NIL
@@ -566,9 +566,9 @@ NIL
 
 SLIDER
 6
-110
+120
 169
-143
+153
 weight-ratio
 weight-ratio
 0
@@ -581,9 +581,9 @@ HORIZONTAL
 
 SLIDER
 6
-143
+156
 169
-176
+189
 weight-size
 weight-size
 0.01
@@ -595,10 +595,10 @@ NIL
 HORIZONTAL
 
 BUTTON
-80
-8
-155
-42
+84
+10
+159
+44
 re-setup
 setup-with-seed
 NIL
@@ -612,17 +612,17 @@ NIL
 1
 
 OUTPUT
-190
-274
-300
-304
+44
+232
+154
+262
 11
 
 TEXTBOX
-159
-278
-195
-296
+12
+235
+48
+253
 seed: 
 11
 0.0
@@ -693,7 +693,7 @@ So the gradual updating of the activation values of the nodes--the settling of t
 
 (Notes on algorithms to be added.)
 
-Randomly setting the activation values is done using what's known as a pseudorandom number generator, which generates numbers that appear sufficiently random for the purposes of simulations such as this one, but that are controlled by an initial value known as a "seed".  Although activation values appear to be set randomly, using the same a particular seed always produces the same "random" values.  The current seed is displayed near the bottom of the user interface for the model.  *setup* chooses a new seed each time; *re-setup* uses the seed from last time.  It's also possible to use an old seed by copying it and then entering a command at the prompt below the model interface: *set seed <old-seed>*.
+Randomly setting the activation values is done using what's known as a pseudorandom number generator, which generates numbers that appear sufficiently random for the purposes of simulations such as this one, but that are controlled by an initial value known as a "seed".  Although activation values appear to be set randomly, using the same a particular seed always produces the same "random" values.  The current seed is displayed near the bottom of the user interface for the model.  *setup* chooses a new seed each time; *re-setup* uses the seed from last time.  It's also possible to use an old seed by copying it and then entering a command in the command-center: *set seed <old-seed>*.
 
 ## HOW TO USE IT
 
