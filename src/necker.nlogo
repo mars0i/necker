@@ -2,7 +2,8 @@
 
 ;; TODO change node update to more closely match what's in the paper?
 
-globals [
+globals [  ;; ADD NEW VARIABLES TO my-clear-globals
+  seed ; so we can store current random seed across runs (don't add to my-clear-globals)
   half-square-side ; how far nodes are from center of cube along x, y
   node-shift-x ; how much x shift of four nodes to give the illusion
   node-shift-y ; how much y shift of four nodes to give the illusion
@@ -20,13 +21,12 @@ globals [
   front-label-color   ; color of "front" labeled near front of cube
   base-link-thickness
   min-activation-change ; stop settling if change is < this in all nodes
-  ;default-learning-rate
   default-external-input-wt
   default-weight-ratio
   default-weight-size
   positive-link-weight ; needs to be smaller than neg link weight
   negative-link-weight
-]
+] ;; ADD NEW VARIABLES TO my-clear-globals
 
 ;; Functionally, all links/constraints will be treated as
 ;; undirected (or bi-directed), but we need directed links
@@ -49,13 +49,20 @@ cubes-own [front-upper-left front-upper-right back-upper-left back-upper-right ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Main procedures
 
-to setup
-  clear-all
+to seed-and-setup
+  set seed new-seed ; manage random seed ourself so we can re-run
+  setup-with-seed
+end
+
+to setup-with-seed
+  my-clear-all
+  random-seed seed
+  clear-output
+  output-print seed
   setup-constants
   ask patches [ set pcolor bg-color ]
   setup-cube-network ; sets left-cube, right-cube
   update-from-ui-controls
-  ;ask perceptron [ compute-activation ]
   reset-ticks
 end
 
@@ -69,6 +76,42 @@ end
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Miscellaneous setup and go procedures
 
+to my-clear-all
+  my-clear-globals
+  clear-ticks
+  clear-turtles
+  clear-patches
+  clear-drawing
+  clear-all-plots
+end
+
+;; REPLACES clear-globals but allows some vars to carry across runs (i.e. ones not listed here)
+to my-clear-globals
+  ;; intentionally missing: seed
+  set half-square-side 0
+  set node-shift-x 0
+  set node-shift-y 0
+  set cube-shift-x 0
+  set centering-shift 0
+  set left-cube 0
+  set right-cube 0
+  set bg-color 0
+  set pos-link-front-color 0
+  set pos-link-mid-color 0
+  set pos-link-back-color 0
+  set neg-link-colors 0
+  set num-neg-link-colors 0
+  set surface-fill-color 0
+  set front-label-color 0
+  set base-link-thickness 0
+  set min-activation-change 0
+  set default-external-input-wt 0
+  set default-weight-ratio 0
+  set default-weight-size 0
+  set positive-link-weight 0
+  set negative-link-weight 0
+end
+
 to setup-constants
   set bg-color white
   set-default-shape constraints "straight-no-arrow" ; this makes directed links look undirected
@@ -77,7 +120,7 @@ to setup-constants
   set node-shift-x 60
   set node-shift-y 60
   set cube-shift-x 135
-  set centering-shift -22
+  set centering-shift -28
   set pos-link-front-color black; 87 ; 94
   set pos-link-mid-color black ; 85 ; 92
   set pos-link-back-color black; 96 ; 90
@@ -118,6 +161,10 @@ to set-default-params
   set external-input-wt default-external-input-wt
   set weight-ratio default-weight-ratio
   set weight-size default-weight-size
+end
+
+to-report current-seed
+  report seed
 end
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -375,10 +422,10 @@ to fill-surface [surface-color lower-left-corner-node upper-right-corner-node] ;
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
-175
-10
-744
-300
+176
+8
+726
+267
 -1
 -1
 1.0
@@ -391,10 +438,10 @@ GRAPHICS-WINDOW
 0
 0
 1
--280
-280
--140
-140
+-270
+270
+-125
+125
 1
 1
 1
@@ -407,7 +454,7 @@ BUTTON
 81
 42
 setup
-setup
+seed-and-setup
 NIL
 1
 T
@@ -436,10 +483,10 @@ NIL
 0
 
 SWITCH
-5
+7
 277
-152
-310
+154
+311
 show-activations
 show-activations
 1
@@ -447,10 +494,10 @@ show-activations
 -1000
 
 BUTTON
-83
-41
-160
-75
+84
+42
+161
+76
 go once
 go
 NIL
@@ -464,10 +511,10 @@ NIL
 0
 
 SWITCH
-5
-245
-151
-278
+7
+244
+153
+277
 show-neg-links
 show-neg-links
 0
@@ -488,13 +535,13 @@ show-nodes
 SLIDER
 6
 76
-171
-109
+170
+110
 external-input-wt
 external-input-wt
 0
 0.0002
-0.0
+1.0E-5
 0.00001
 1
 NIL
@@ -546,6 +593,40 @@ weight-size
 1
 NIL
 HORIZONTAL
+
+BUTTON
+84
+10
+163
+44
+re-setup
+setup-with-seed
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
+OUTPUT
+190
+274
+285
+304
+11
+
+TEXTBOX
+159
+278
+195
+291
+seed: 
+11
+0.0
+1
 
 @#$#@#$#@
 (In progress.)
@@ -610,10 +691,15 @@ So the gradual updating of the activation values of the nodes--the settling of t
 
 ## HOW IT WORKS
 
+(Notes on algorithms to be added.)
+
+Randomly setting the activation values is done using what's known as a pseudorandom number generator, which generates numbers that appear sufficiently random for the purposes of simulations such as this one, but that are controlled by an initial value known as a "seed".  Although activation values appear to be set randomly, using the same a particular seed always produces the same "random" values.  The current seed is displayed near the bottom of the user interface for the model.  *setup* chooses a new seed each time; *re-setup* uses the seed from last time.  It's also possible to use an old seed by copying it and then entering a command at the prompt below the model interface: *set seed <old-seed>*.
 
 ## HOW TO USE IT
 
 SETUP sets each node's activation value to a random number between -1 and 1.
+
+RE-SETUP does the same thing, but uses the random configuration from the last run, so that you can examine the run at slower tick speed, turn on *show-activations*, or see how changing some configuration parameter affects behavior given the same starting point.
 
 GO ONCE performs one iteration of settling.  That is, each node's activation value is adjusted due to the influence of the activation values of the nodes to which it is connected, and the weights of the links between nodes.
 
@@ -630,6 +716,8 @@ RESTORE DEFAULT PARAMETERS resets learning-rate and external-input to default va
 The SHOW-NODES and SHOW-NEG-LINKS switches can be used to hide the node circles and negative links, so that you can see the two Necker cubes without visual interference.
 
 SHOW-ACTIVATIONS allows you to see the activation values for each node.  The location of these numbers on the screen is not ideal.  NetLogo makes it a bit difficult to put them in a place that would be easier to read.  (If this is important to you, let me know, and I'll consider fixing the problem.)
+
+SEED shows the random seed used for the current run.  See HOW IT WORKS for more information.
 
 Notice that as with most NetLogo models, you can slow down or speed up the settling process using NetLogo's speed slider.  This doesn't affect the process, but it might allow you to watch what happens during settling, or to focus on the end result.
 
