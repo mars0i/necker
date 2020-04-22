@@ -424,8 +424,8 @@ end
 GRAPHICS-WINDOW
 176
 8
-726
-267
+725
+268
 -1
 -1
 1.0
@@ -486,7 +486,7 @@ SWITCH
 7
 277
 154
-311
+310
 show-activations
 show-activations
 1
@@ -494,10 +494,10 @@ show-activations
 -1000
 
 BUTTON
-84
-42
-161
-76
+80
+40
+155
+74
 go once
 go
 NIL
@@ -536,7 +536,7 @@ SLIDER
 6
 76
 170
-110
+109
 external-input-wt
 external-input-wt
 0
@@ -595,10 +595,10 @@ NIL
 HORIZONTAL
 
 BUTTON
-84
-10
-163
-44
+80
+8
+155
+42
 re-setup
 setup-with-seed
 NIL
@@ -614,7 +614,7 @@ NIL
 OUTPUT
 190
 274
-285
+300
 304
 11
 
@@ -622,7 +622,7 @@ TEXTBOX
 159
 278
 195
-291
+296
 seed: 
 11
 0.0
