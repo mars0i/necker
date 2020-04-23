@@ -424,11 +424,11 @@ end
 GRAPHICS-WINDOW
 176
 8
-725
-268
+737
+273
 -1
 -1
-1.0
+1.0222
 1
 10
 1
@@ -494,10 +494,10 @@ show-activations
 -1000
 
 BUTTON
-84
-48
+85
+49
 159
-82
+83
 go once
 go
 NIL
@@ -597,9 +597,9 @@ HORIZONTAL
 BUTTON
 84
 10
-159
+158
 44
-re-setup
+again
 setup-with-seed
 NIL
 1
@@ -693,13 +693,13 @@ So the gradual updating of the activation values of the nodes--the settling of t
 
 (Notes on algorithms to be added.)
 
-Randomly setting the activation values is done using what's known as a pseudorandom number generator, which generates numbers that appear sufficiently random for the purposes of simulations such as this one, but that are controlled by an initial value known as a "seed".  Although activation values appear to be set randomly, using the same a particular seed always produces the same "random" values.  The current seed is displayed near the bottom of the user interface for the model.  *setup* chooses a new seed each time; *re-setup* uses the seed from last time.  It's also possible to use an old seed by copying it and then entering a command in the command-center: *set seed <old-seed>*.
+Randomly setting the activation values is done using what's known as a pseudorandom number generator, which generates numbers that appear sufficiently random for the purposes of simulations such as this one, but that are controlled by an initial value known as a "seed".  Although activation values appear to be set randomly, using the same a particular seed always produces the same "random" values.  The current seed is displayed near the bottom of the user interface for the model.  *setup* chooses a new seed each time; *again* uses the seed from last time.  It's also possible to use an old seed by copying it and then entering a command in the command-center: *set seed <old-seed>*.
 
 ## HOW TO USE IT
 
 SETUP sets each node's activation value to a random number between -1 and 1.
 
-RE-SETUP does the same thing, but uses the random configuration from the last run, so that you can examine the run at slower tick speed, turn on *show-activations*, or see how changing some configuration parameter affects behavior given the same starting point.
+AGAIN does the same thing, but uses the random configuration from the last run, so that you can examine the run at slower tick speed, turn on *show-activations*, or see how changing some configuration parameter affects behavior given the same starting point.
 
 GO ONCE performs one iteration of settling.  That is, each node's activation value is adjusted due to the influence of the activation values of the nodes to which it is connected, and the weights of the links between nodes.
 
