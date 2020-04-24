@@ -719,11 +719,11 @@ So the gradual updating of the activation values of the nodes--the settling of t
 
 NetLogo shows the number of ticks,, i.e. cycles, that it takes to settle the network.  Notice that this number varies from run to run depending on the initial random activation values.
 
-Often, the network will settle in a few ticks.  Sometimes it gets into a state in which each subnetwork contains a mix of positive and negative nodes that remains somewhat stable for a while.  
+Often, the network will settle in a few ticks.  But sometimes it gets into a state in which each subnetwork contains a mix of positive and negative nodes that remains somewhat stable for a while.  
 
-If the colors seem somewhat stable but you see some of the activations changing--if the colors seem to be flashing a little--let the model run for while.  (You can speed it up with the speed slider if you want.)  It's likely that it will eventually settle.
+If the colors seem somewhat stable but you see some of the activations changing--if the colors seem to be flashing a little bit--then let the model run for while.  (You can speed it up with the speed slider if you want.)  It's likely that it will eventually settle.
 
-On the other hand, sometimes the model gets into a state that is "paradoxical"--in which each network is representing an incompatible mix of node values--and it will apparently remain that way forever.  This is rare, but it can happen.  If you don't see any of the nodes flashing, that may be what has happened.
+On the other hand, sometimes the model is permanently stuck in a state that is "paradoxical"--in which each network is representing an incompatible mix of hypotheses about locations of corners in three dimensions.  The model may stop running if the activation values have stopped changing, or it may continue running, apparently forever.  This is rare with the default parameters, but it can happen.  If the model hasn't stopped but you don't see any of the nodes flashing, that may be what is going on.  You can turn on *show-activations* to see that the activation values are in fact changing a little bit.
 
 ## THINGS TO TRY
 
