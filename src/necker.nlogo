@@ -689,7 +689,7 @@ In order to construct a three-dimensional cube from a two-dimensional diagram (s
 
 Now turn on *show-nodes*, and click *setup* again.  The colored circles at the corners of the squares are nodes, or abstract, idealized neurons in a "neural network" model.  The lines of the two Necker cubes now also represent links between these nodes.  
 
-Each node has a number called its *activation*, which is represented in the NetLogo model by color.  Activation values range from -1 to 1.  Red nodes have negative activations, with bright reds representing numbers closer to -1.  Blue nodes have positive activations, with bright blues representing numbers closer to 1.
+Each node has a number called its `activation`, which is represented in the NetLogo model by color.  Activation values range from -1 to 1.  Red nodes have negative activations, with bright reds representing numbers closer to -1.  Blue nodes have positive activations, with bright blues representing numbers closer to 1.
 
 The links between nodes--i.e. the lines that are also edges of the Necker cubes--allow communication between nodes.  (There is no difference between links represented by solid and dashed black lines.)  When you click on *go once*, each node will "try" to influence the nodes to which it is linked.  That is, the activation values of nodes that are connected to a node with negative activation will be pushed a little bit toward a lower value, and the nodes that are connected to a node with a positive vaue, with have their activations pushed a little bit higher.  The end result of clicking on *go once* is that each node gets a new activation value that is a sort of average of its old activation value and the activation values of all of the nodes to which it is linked.  (There is more to say, though--see the next sections.)
 
@@ -738,20 +738,20 @@ On the other hand, sometimes the model gets into a state that is "paradoxical"--
 Nodes update each other as follows, with "neighbors* referring to nodes on the
 other ends of links connected to a given node:
 
-1. Within each node, the current *activation* is stored in a separate variable, *prev-activation*.  This allows update to happen as if each node was updating its
+1. Within each node, the current `activation` is stored in a separate variable, `prev-activation`.  This allows update to happen as if each node was updating its
 neighbors simultaneously.
 
-2. For each node, its *activation* is updated to be the sum of
-    * Its current value (now in *prev-activation*),
-    * The activation (*prev-activation*) of every neighbor multiplied by the weight of        the link between the neighbor and the node, and
-    * The value of *external-input* (set by a slider in the GUI),
+2. For each node, its `activation` is updated to be the sum of
+    * Its current value (now in `prev-activation`),
+    * The activation (`prev-activation`) of every neighbor multiplied by the weight of        the link between the neighbor and the node, and
+    * The value of `external-input` (set by a slider in the GUI),
 
 except that if the sum is less than -1 the activation is set to -1, and if the sum greater than 1, the activation is set to 1.
 
 
 
 
-Randomly setting the activation values is done using what's known as a pseudorandom number generator, which generates numbers that appear sufficiently random for the purposes of simulations such as this one, but that are controlled by an initial value known as a "seed".  Although activation values appear to be set randomly, using the same a particular seed always produces the same "random" values.  The current seed is displayed near the bottom of the user interface for the model.  *setup* chooses a new seed each time; *again* uses the seed from last time.  It's also possible to use an old seed by copying it and then entering a command in the command-center: *set seed <old-seed>*.
+Randomly setting the activation values is done using what's known as a pseudorandom number generator, which generates numbers that appear sufficiently random for the purposes of simulations such as this one, but that are controlled by an initial value known as a "seed".  Although activation values appear to be set randomly, using the same a particular seed always produces the same "random" values.  The current seed is displayed near the bottom of the user interface for the model.  *setup* chooses a new seed each time; *again* uses the seed from last time.  It's also possible to use an old seed by copying it and then entering a command in the command-center: `set seed <old-seed>`.
 
 ### Reading the code
 
