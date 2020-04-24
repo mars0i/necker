@@ -543,7 +543,7 @@ external-input-wt
 external-input-wt
 0
 0.0002
-8.0E-5
+1.0E-5
 0.00001
 1
 NIL
@@ -590,7 +590,7 @@ weight-size
 weight-size
 0.01
 1.0
-1.0
+0.5
 0.01
 1
 NIL
@@ -631,9 +631,6 @@ seed:
 1
 
 @#$#@#$#@
-(In progress.)
-
-
 ## WHAT IS IT?
 
 This is a "constraint satisfaction" neural network model.  It is a simple mode of a perceptual process for interpreting a 2-D image known as a Necker cube as three-dimensional (https://en.wikipedia.org/wiki/Necker_cube).  The pattern of light that comes into the eye and hits the back of the retina is essentially two-dimensional, yet we experience a three-dimensional world.  So our visual system has to reconstruct representation of a three-dimensional world from two-dimensional data.  In a sense, what the visual system is doing is taking two-dimensional data, and using it to construct a "theory" about the structure of the three-dimensional world that light is reflecting off of.  
@@ -730,8 +727,15 @@ On the other hand, sometimes the model gets into a state that is "paradoxical"--
 
 ## THINGS TO TRY
 
+Sometimes the model takes a long time to settle, and sometimes settles quickly.  You can run the model again with the same starting configuration but more slowly, more quickly, or with activation values displayed.
+
+Is there an obvious difference between patterns for starting activation values for which settling takes a long time, and those for which settling is quick?
+
+How does settling change if you adjust some of the slider values?  For the same initial pattern of activations?  On average?
 
 ## HOW IT WORKS
+
+For an informal description of how this model works, see TUTORIAL above.  This section goes into a little more detail about a few points.
 
 ### Algorithms
 
@@ -748,10 +752,9 @@ neighbors simultaneously.
 
 except that if the sum is less than -1 the activation is set to -1, and if the sum greater than 1, the activation is set to 1.
 
+Randomly setting the activation values is done using what's known as a pseudorandom number generator, which generates numbers that appear sufficiently random for the purposes of simulations such as this one, but that are controlled by an initial value known as a "seed".  Although activation values appear to be set randomly, using the same a particular seed always produces the same "random" values.  The current seed is displayed near the bottom of the user interface for the model.  *setup* chooses a new seed each time; *again* uses the seed from last time.
 
-
-
-Randomly setting the activation values is done using what's known as a pseudorandom number generator, which generates numbers that appear sufficiently random for the purposes of simulations such as this one, but that are controlled by an initial value known as a "seed".  Although activation values appear to be set randomly, using the same a particular seed always produces the same "random" values.  The current seed is displayed near the bottom of the user interface for the model.  *setup* chooses a new seed each time; *again* uses the seed from last time.  It's also possible to use an old seed by copying it and then entering a command in the command-center: `set seed <old-seed>`.
+It's also possible to use an old seed by copying it and then entering a command in the command-center: `set seed <old-seed>`.
 
 ### Reading the code
 
