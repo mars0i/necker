@@ -491,7 +491,7 @@ SWITCH
 306
 show-activations
 show-activations
-0
+1
 1
 -1000
 
@@ -733,13 +733,33 @@ On the other hand, sometimes the model gets into a state that is "paradoxical"--
 
 ## HOW IT WORKS
 
-(Notes on algorithms to be added.)
+### Algorithms
+
+Nodes update each other as follows, with "neighbors* referring to nodes on the
+other ends of links connected to a given node:
+
+1. Within each node, the current *activation* is stored in a separate variable, *prev-activation*.  This allows update to happen as if each node was updating its
+neighbors simultaneously.
+
+2. For each node, its *activation* is updated to be the sum of
+    * Its current value (now in *prev-activation*),
+    * The activation (*prev-activation*) of every neighbor multiplied by the weight of        the link between the neighbor and the node, and
+    * The value of *external-input* (set by a slider in the GUI),
+
+except that if the sum is less than -1 the activation is set to -1, and if the sum greater than 1, the activation is set to 1.
+
+
+
 
 Randomly setting the activation values is done using what's known as a pseudorandom number generator, which generates numbers that appear sufficiently random for the purposes of simulations such as this one, but that are controlled by an initial value known as a "seed".  Although activation values appear to be set randomly, using the same a particular seed always produces the same "random" values.  The current seed is displayed near the bottom of the user interface for the model.  *setup* chooses a new seed each time; *again* uses the seed from last time.  It's also possible to use an old seed by copying it and then entering a command in the command-center: *set seed <old-seed>*.
+
+### Reading the code
 
 Most of the source code merely sets up the network.  This requires a bit of code because there are 16 nodes and 40 constraint links.  Each of these 56 items has a particular meaning and function, and each needs to be displayed on the screen in a particular way.  Many of the global variables are needed only for the setup process.
 
 The code that actually runs the network consists of about 50 lines of code, all appearing before the setup code (which is marked as such).  To understand what is happening within the network, you can start by reading those relatively few lines.  I suggest starting with the `go` routine, then skipping down to `settle-network`.
+
+(There is an alternative, commented-out version of the `settle-network` function, which is my attempt to implement the algorithm described in the Rumelhart et al. chapter cited below.)
 
 
 ## CREDITS AND REFERENCES
