@@ -494,10 +494,10 @@ show-activations
 -1000
 
 BUTTON
-85
-49
-159
-83
+86
+48
+160
+82
 go once
 go
 NIL
@@ -595,10 +595,10 @@ NIL
 HORIZONTAL
 
 BUTTON
-84
-10
-158
-44
+85
+9
+159
+43
 again
 setup-with-seed
 NIL
@@ -619,10 +619,10 @@ OUTPUT
 11
 
 TEXTBOX
-12
-235
-48
-253
+13
+238
+49
+256
 seed: 
 11
 0.0
@@ -632,8 +632,7 @@ seed:
 (In progress.)
 
 
-
-## WHAT IS IT? (Overview)
+## WHAT IS IT?
 
 This is a "constraint satisfaction" neural network model.  It is a simple mode of a perceptual process for interpreting a 2-D image known as a Necker cube as three-dimensional (https://en.wikipedia.org/wiki/Necker_cube). See the end of this document for information on where the idea for the model came from.  
 The pattern of light that comes into the eye and hits the back of the retina is essentially two-dimensional, yet we experience a three-dimensional world.  So our visual system has to reconstruct representation of a three-dimensional world from two-dimensional data.  In a sense, what the visual system is doing is taking two-dimensional data, and using it to construct a "theory" about the structure of the three-dimensional world that light is reflecting off of.  
@@ -643,8 +642,37 @@ Various sorts of information in this data gets used by the visual system in our 
 This program models a process by which these two different hypotheses compete with each other.  It is a model of a process by which a visual system might work out a consistent
 3-D construction of a cube.
 
+For a more detailed introduction to this model and the ideas behind it, see TUTORIAL below.
 
-## WHAT IS IT? (Tutorial)
+
+## HOW TO USE IT
+
+SETUP sets each node's activation value to a random number between -1 and 1.
+
+AGAIN does the same thing, but uses the random configuration from the last run, so that you can examine the run at slower tick speed, turn on *show-activations*, or see how changing some configuration parameter affects behavior given the same starting point.
+
+GO ONCE performs one iteration of settling.  That is, each node's activation value is adjusted due to the influence of the activation values of the nodes to which it is connected, and the weights of the links between nodes.
+
+GO does the same thing as GO ONCE, but does it repeatedly until the activation values of the nodes stop changing significantly.
+
+WEIGHT-RATIO specifies the ratio of the absolute value of the weight on negative links to the weight on positive links.  This is set to 2/3 by default, so that, for example if the weight on a negative link is -1/2, the weight on a positive link will be 2/3 of 1/2, or 2/6 = 1/3.  The reason that the weight-ratio is normally set to 2/3 is that each node had three positive links and two negative links.  Since 3 * 2/3 = 2, this means that the net effect of the positive links will be balanced by the net effect of the negative links.
+
+WEIGHT-SIZE specifies the strengths of weights on negative links.  The weight on a negative link is -1 times *weight-size*.  The weight on a positive link is therefore *weight-size* times *weight-ratio*.
+
+EXTERNAL-INPUT specifies a small number that is added to activation of each node when it is updated.
+
+RESTORE DEFAULT PARAMETERS resets learning-rate and external-input to default values specified in the code.
+
+The SHOW-NODES and SHOW-NEG-LINKS switches can be used to hide the node circles and negative links, so that you can see the two Necker cubes without visual interference.
+
+SHOW-ACTIVATIONS allows you to see the activation values for each node.  The location of these numbers on the screen is not ideal.  NetLogo makes it a bit difficult to put them in a place that would be easier to read.  (If this is important to you, let me know, and I'll consider fixing the problem.)
+
+SEED shows the random seed used for the current run.  See HOW IT WORKS for more information.
+
+Notice that as with most NetLogo models, you can slow down or speed up the settling process using NetLogo's speed slider.  This doesn't affect the process, but it might allow you to watch what happens during settling, or to focus on the end result.
+
+
+## TUTORIAL
 
 This section presents the ideas behind this model in a way that should be useful for people who are unfamiliar with the ideas involved.
 
@@ -689,39 +717,6 @@ The same lower-left node in the left-hand subnetwork is also connected by a diag
 So the gradual updating of the activation values of the nodes--the settling of the network--is the result both of the positive links between nodes in the same subnetwork, and the negative links between competing nodes in the two subnetworks.
 
 
-## HOW IT WORKS
-
-(Notes on algorithms to be added.)
-
-Randomly setting the activation values is done using what's known as a pseudorandom number generator, which generates numbers that appear sufficiently random for the purposes of simulations such as this one, but that are controlled by an initial value known as a "seed".  Although activation values appear to be set randomly, using the same a particular seed always produces the same "random" values.  The current seed is displayed near the bottom of the user interface for the model.  *setup* chooses a new seed each time; *again* uses the seed from last time.  It's also possible to use an old seed by copying it and then entering a command in the command-center: *set seed <old-seed>*.
-
-## HOW TO USE IT
-
-SETUP sets each node's activation value to a random number between -1 and 1.
-
-AGAIN does the same thing, but uses the random configuration from the last run, so that you can examine the run at slower tick speed, turn on *show-activations*, or see how changing some configuration parameter affects behavior given the same starting point.
-
-GO ONCE performs one iteration of settling.  That is, each node's activation value is adjusted due to the influence of the activation values of the nodes to which it is connected, and the weights of the links between nodes.
-
-GO does the same thing as GO ONCE, but does it repeatedly until the activation values of the nodes stop changing significantly.
-
-WEIGHT-RATIO specifies the ratio of the absolute value of the weight on negative links to the weight on positive links.  This is set to 2/3 by default, so that, for example if the weight on a negative link is -1/2, the weight on a positive link will be 2/3 of 1/2, or 2/6 = 1/3.  The reason that the weight-ratio is normally set to 2/3 is that each node had three positive links and two negative links.  Since 3 * 2/3 = 2, this means that the net effect of the positive links will be balanced by the net effect of the negative links.
-
-WEIGHT-SIZE specifies the strengths of weights on negative links.  The weight on a negative link is -1 times *weight-size*.  The weight on a positive link is therefore *weight-size* times *weight-ratio*.
-
-EXTERNAL-INPUT specifies a small number that is added to activation of each node when it is updated.
-
-RESTORE DEFAULT PARAMETERS resets learning-rate and external-input to default values specified in the code.
-
-The SHOW-NODES and SHOW-NEG-LINKS switches can be used to hide the node circles and negative links, so that you can see the two Necker cubes without visual interference.
-
-SHOW-ACTIVATIONS allows you to see the activation values for each node.  The location of these numbers on the screen is not ideal.  NetLogo makes it a bit difficult to put them in a place that would be easier to read.  (If this is important to you, let me know, and I'll consider fixing the problem.)
-
-SEED shows the random seed used for the current run.  See HOW IT WORKS for more information.
-
-Notice that as with most NetLogo models, you can slow down or speed up the settling process using NetLogo's speed slider.  This doesn't affect the process, but it might allow you to watch what happens during settling, or to focus on the end result.
-
-
 ## THINGS TO NOTICE
 
 NetLogo shows the number of ticks,, i.e. cycles, that it takes to settle the network.  Notice that this number varies from run to run depending on the initial random activation values.
@@ -735,7 +730,11 @@ On the other hand, sometimes the model gets into a state that is "paradoxical"--
 ## THINGS TO TRY
 
 
-## CODE NOTES
+## HOW IT WORKS
+
+(Notes on algorithms to be added.)
+
+Randomly setting the activation values is done using what's known as a pseudorandom number generator, which generates numbers that appear sufficiently random for the purposes of simulations such as this one, but that are controlled by an initial value known as a "seed".  Although activation values appear to be set randomly, using the same a particular seed always produces the same "random" values.  The current seed is displayed near the bottom of the user interface for the model.  *setup* chooses a new seed each time; *again* uses the seed from last time.  It's also possible to use an old seed by copying it and then entering a command in the command-center: *set seed <old-seed>*.
 
 Most of the source code merely sets up the network.  This requires a bit of code because there are 16 nodes and 40 constraint links.  Each of these 56 items has a particular meaning and function, and each needs to be displayed on the screen in a particular way.  Many of the global variables are needed only for the setup process.
 
