@@ -188,17 +188,20 @@ to settle-network
   ]
 end
 
-;; This is similar to the method in Rumelhart et al. chapter 14, vol. II of the PDP book.
-;; It's different because the values range from -1 to 1 rather than 0 to 1, and the update
-;; is effectively in in parallel, rather than sequentially updating nodes from others that
-;; have already been changed.  However, this method often settles in a paradoxical state.
+;; This seems to be similar to the method in Rumelhart et al. chapter 14, vol. II of the PDP book.
+;; It's different because the values range from -1 to 1 rather than 0 to 1.  The update
+;; is effectively in in parallel if the simultaneous update line is uncommented
+;; (unlike Rumelhart et al.), or sequential (like Rumelhart et al.) if instead the sequential
+;; update line is uncommented.  However, this method often settles in a paradoxical state, so
+;; it may be that this is not actually what Rumelhart et al. used.  Perhaps I have misunderstood.
 ;to settle-network
-;  ask nodes [set prev-activation activation] ; do this first to allow updates to be effectively simultaneous
+;  ask nodes [set prev-activation activation] ; uncomment this for effectively SIMULTANEOUS UPDATE
 ;
 ;  ask nodes [
 ;    let net-input 0 ; will sum weighted values of neighbors
 ;    ask my-constraints [
 ;      ask other-end [
+;        ;set prev-activation activation ; uncomment this for effective SEQUENTIAL UPDATE
 ;        set net-input net-input + [weight] of myself * prev-activation + external-input-wt
 ;      ]
 ;    ]
@@ -206,9 +209,8 @@ end
 ;                               [1 - prev-activation]
 ;                               [prev-activation - -1]
 ;    set activation prev-activation + net-input * activation-distance
-;    ;set activation max (list -1 (min (list 1 activation)))
+;    set activation max (list -1 (min (list 1 activation)))
 ;    update-node-color self
-;    ;print (list prev-activation activation net-input) ; DEBUG
 ;  ]
 ;end
 
@@ -489,7 +491,7 @@ SWITCH
 306
 show-activations
 show-activations
-1
+0
 1
 -1000
 
@@ -541,7 +543,7 @@ external-input-wt
 external-input-wt
 0
 0.0002
-1.0E-5
+8.0E-5
 0.00001
 1
 NIL
@@ -588,7 +590,7 @@ weight-size
 weight-size
 0.01
 1.0
-0.5
+1.0
 0.01
 1
 NIL
@@ -634,8 +636,7 @@ seed:
 
 ## WHAT IS IT?
 
-This is a "constraint satisfaction" neural network model.  It is a simple mode of a perceptual process for interpreting a 2-D image known as a Necker cube as three-dimensional (https://en.wikipedia.org/wiki/Necker_cube). See the end of this document for information on where the idea for the model came from.  
-The pattern of light that comes into the eye and hits the back of the retina is essentially two-dimensional, yet we experience a three-dimensional world.  So our visual system has to reconstruct representation of a three-dimensional world from two-dimensional data.  In a sense, what the visual system is doing is taking two-dimensional data, and using it to construct a "theory" about the structure of the three-dimensional world that light is reflecting off of.  
+This is a "constraint satisfaction" neural network model.  It is a simple mode of a perceptual process for interpreting a 2-D image known as a Necker cube as three-dimensional (https://en.wikipedia.org/wiki/Necker_cube).  The pattern of light that comes into the eye and hits the back of the retina is essentially two-dimensional, yet we experience a three-dimensional world.  So our visual system has to reconstruct representation of a three-dimensional world from two-dimensional data.  In a sense, what the visual system is doing is taking two-dimensional data, and using it to construct a "theory" about the structure of the three-dimensional world that light is reflecting off of.  
 
 Various sorts of information in this data gets used by the visual system in our eye, optic nerve, and brain in this process.  The Necker cube illustrations one aspect of this process: they eye sees an object in the world that is literally two-dimensional, but that we tend to experience as three-dimensional.  There are two ways to do this, experiencing a 3-D cube from two different perspectives.  Just before a Necker cube is experienced as three-dimensional, or when the perception of the diagram "flips" from one perspective to another, we can consider the visual system to be entertaining two different hypotheses about the three-dimensional structure represented by the Necker cube figure.
 
