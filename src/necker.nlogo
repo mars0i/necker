@@ -633,7 +633,7 @@ seed:
 @#$#@#$#@
 ## WHAT IS IT?
 
-This is a "constraint satisfaction" neural network model.  It is a simple model of a perceptual process for interpreting a 2-D image known as a Necker cube.  Humans normally perceive this sort of image as if it was three-dimensional (https://en.wikipedia.org/wiki/Necker_cube).  
+This is a "constraint satisfaction" neural network model written in NetLogo, a tool for writing simulations.  It is a simple model of a perceptual process for interpreting a 2-D image known as a Necker cube.  Humans normally perceive this sort of image as if it was three-dimensional (https://en.wikipedia.org/wiki/Necker_cube).  
 
 The pattern of light that comes into the eye and hits the back of the retina is essentially two-dimensional, yet we experience a three-dimensional world.  So our visual system has to reconstruct representation of a three-dimensional world from two-dimensional data.  In a sense, what the visual system is doing is taking two-dimensional data, and using it to construct a "theory" about the structure of the three-dimensional world that light is reflecting off of.  
 
@@ -674,15 +674,15 @@ Notice that as with most NetLogo models, you can slow down or speed up the settl
 
 ## TUTORIAL
 
-This section presents the ideas behind this model in a way that should be useful for people who are unfamiliar with the ideas involved.
+This section presents an introduction to the ideas involved in this model.
 
 ### Necker cubes 
 
-First, try turning off the *show-nodes* and *show-neg-links* options on the left side of the NetLogo model, and then click on *setup*.  This shows two Necker cubes, one on the left, and one on the right.  For the moment, try to see each as a two-dimensional drawing, consistneting of lines on the screen.  Each image consists of two overlapping squares, one of which is shifted diagonally from the other, and four diagonal lines connecting the corners of the two squares.  
+First, try turning off the *show-nodes* and *show-neg-links* options on the left side of the NetLogo model, and then click on *setup*.  This shows two Necker cubes, one on the left, and one on the right.  For the moment, try to see each as a two-dimensional drawing, consisting of lines on the screen.  Each image consists of two overlapping squares, one of which is shifted diagonally from the other, with four diagonal lines connecting the corners of the two squares.  
 
-However, our visual systems tends to see each of these two-dimensional objects as if each was a three-dimensional cube.  There are two different ways that the human visual system turns this kind of two-dimensional object into something that is experienced as cube.  The dashed lines, the label "front", and the shaded front square, the images suggest those two ways of seeing the diagrams.  The left image is supposed to suggest seeing the upper right square as the front of the cube, and the lower parallelogram as its bottom.  The right images is intended to suggest that the lower left square is the front, with the upper parallelogram as the top of the square.  However, the pattern of two overlapping squares with diagonal lines connecting their corners is the same in both of the images.
+However, our visual systems tend to see each of these two-dimensional objects as if it was a three-dimensional cube.  There are two different ways that the human visual system turns this kind of two-dimensional object into something experienced as cube.  The dashed lines, the label "front", and the shaded front square in the images suggest those two ways of seeing the diagrams.  The left image is supposed to suggest seeing the upper right square as the front of the cube, and the lower parallelogram as its bottom.  The right images is intended to suggest that the lower left square is the front, with the upper parallelogram as the top of the square.  However, the pattern of two overlapping squares with diagonal lines connecting their corners is the same in both of the images.
 
-In order to construct a three-dimensional cube from a two-dimensional diagram (see above), a visual system has to interpret the data from each line and each corner in a way that consistently fits together as a hypothesis about a three-dimensional object.  For example, if the upper right corner of the diagram is the corner of the front surface of a cube, then the corner directly to its left must be the upper left corner of the front of the cube, and the lower left corner of the entire diagram must be the buttom left corner of the back surface of the cube.  So each consistent "hypothesis" about the three-dimensional object represented by the Necker figure can be understood as a series of smaller hypotheses about the locations of corners in space.  These smaller hypotheses have to fit together in a larger perceptual hypothesis.
+In order to construct a three-dimensional cube from a two-dimensional diagram (see above), the visual system has to interpret the data from each line and each corner in a way that consistently fits together as a hypothesis about a three-dimensional object.  For example, if the upper right corner of the diagram is the corner of the front surface of a cube, then the corner directly to its left must be the upper left corner of the front of the cube, and the lower left corner of the entire diagram must be the bottom left corner of the back surface of the cube.  So each consistent "hypothesis" about the three-dimensional object represented by the Necker figure can be understood as a series of smaller hypotheses about the locations of corners in space.  These smaller hypotheses have to fit together in a larger perceptual hypothesis.
 
 ### Positive constraint links
 
@@ -690,31 +690,33 @@ Now turn on *show-nodes*, and click *setup* again.  The colored circles at the c
 
 Each node has a number called its `activation`, which is represented in the NetLogo model by color.  Activation values range from -1 to 1.  Red nodes have negative activations, with bright reds representing numbers closer to -1.  Blue nodes have positive activations, with bright blues representing numbers closer to 1.
 
-The links between nodes--i.e. the lines that are also edges of the Necker cubes--allow communication between nodes.  (There is no difference between links represented by solid and dashed black lines.)  When you click on *go once*, each node will "try" to influence the nodes to which it is linked.  That is, the activation values of nodes that are connected to a node with negative activation will be pushed a little bit toward a lower value, and the nodes that are connected to a node with a positive vaue, with have their activations pushed a little bit higher.  The end result of clicking on *go once* is that each node gets a new activation value that is a sort of average of its old activation value and the activation values of all of the nodes to which it is linked.  (There is more to say, though--see the next sections.)
+The links between nodes--i.e. the lines that are also edges of the Necker cubes--allow communication between nodes.  (There is no difference between links represented by solid and dashed black lines.)  When you click on *go once*, each node will "try" to influence the nodes to which it is linked.  That is, the activation values of nodes that are connected to a node with negative activation will tend to be pushed a little bit toward a lower value, and the nodes that are connected to a node with a positive value, will tend to have their activations pushed a little bit higher.  The end result of clicking on *go once* is that each node gets a new activation value that is a sort of average of its old activation value and the activation values of all of the nodes to which it is linked.  (There is more to say, though--see the next sections.)
 
-We call this process "settling" the network.  *go once* causes one step of settling.  Clicking on *go* is like clicking on *go once* repeatedly.  With *go*, the activation values of the nodes will change bit by bit, until they don't change any more, at which point the *go* button will release itself, because the settling process has ended.
+We call this process "settling" the network.  *go once* causes one step of settling.  Clicking on *go* is like clicking on *go once* repeatedly.  With *go*, the activation values of the nodes will change bit by bit, until they don't change any more--at which point the *go* button will release itself because the settling process has ended.
 
 ### Subnetworks as perceptual hypotheses
 
-The left subnetwok---the one corresponding to the left Necker figure--is supposed to represent the hypothesis that the upper right square in the figure is the front of the cube, and the lower left square (two of whose sides are dashed) represents the back of the cube.
+The left subnetwork---the one corresponding to the left Necker figure--is supposed to represent the hypothesis that the upper right square in the figure is the front of the cube, while the lower left square (two of whose sides are dashed) represents the back of the cube.
 
-The right subnetwork represents the hypothesis that the lower-right square is the front of the sube, and the upper left square (with two dashed sides) is the back of the cube.
+The right subnetwork represents the hypothesis that the lower-right square is the front of the cube, and that the upper left square (with two dashed sides) is the back of the cube.
 
-The model "decides" which perceptual hypothesis to adopt as "correct" if all of the nodes in that subnetwork acquire activation (blue) activation values of 1, and if all of the nodes in the other subnetwork acquire (red) activation values of -1.  
+The model "decides" which perceptual hypothesis to adopt as "correct" when all of the nodes in that subnetwork acquire activation values of 1 (blue), and all of the nodes in the other subnetwork acquire activation values of -1 (red).  
 
-We can think of the transmission of influences between connected nodes as pushing each node to adopt the same "hypothesis" as its neighbors.  When the network goes through the settlijng process, nodes with negative activations in effect tell their neighbors, "You should be negative, like me", while nodes with positive activations tell their neighbors, "You should be positive, like me."  When the network settles into a steady state, a consensus has been reached by all of the nodes.
+We can think of the transmission of influence across these positive links as a process by which each node pushes its neighbors to adopt the same positive or negative attitude toward their "hypotheses" as the attitude that it has.  So when the network goes through the settling process, nodes with negative activations in effect tell their neighbors, "You should be negative, like me", while nodes with positive activations tell their neighbors, "You should be positive, like me."  Settling is a gradual process of adjustment and compromise, until a consensus is reached by all of the nodes.
+
+However, we have left out part of the story: negative links.
 
 ### Negative constraint links
 
-Now set *show-neg-links* on.  *show-nodes* should be on as well.  Click on *setup*.  The colors of nodes will change, because *setup* causes new random activations to be assigned to them. In addition, you should now see a number of red lines connecting nodes in the left subnetwork to nodes in the right subnetwork.
+Set *show-neg-links* on; *show-nodes* should be on as well.  Click on *setup*.  The colors of nodes will change, because *setup* causes new random activations to be assigned to the nodes. In addition, you should now see a number of red lines connecting nodes in the left subnetwork to nodes in the right subnetwork.
 
-These lines represent negatively-weighted links between nodes in the two subnetworks that represent competing hypotheses about corners.  For example, the node that is the furthest lower left in the entire diagram is connected by a negative link to the node that is the most lower-left in the right hand subnetwork.  These are inconsistent corner hypotheses because the one from the left subnetwork represents that corner of the Necker cube figure as the back lower left corner of the cube, while the node to which it is connected represents that point in the Necker cube as the lower left corner of the front surface of the cube.  (Notice the shading and "front" labels again, if this is not clear.)
+These lines represent negatively-weighted links between nodes in the two subnetworks.  They connect nodes that represent competing hypotheses about corners.  For example, the node that is the furthest lower left in the entire diagram is connected by a negative link to the node that is the most lower-left in the right hand subnetwork.  These are inconsistent corner hypotheses: The farthest lower left corner in the left figure "says" that this part of the diagram represents the back lower left corner of the cube.  The far lower left node in the right hand figure says that this part of the diagram represents the front left corner.  The lower left corner can't be interpreted both as a back corner and as a front corner, so the corresponding nodes in the two subfigures are inconsistent.
 
-Since these nodes represent competing, incompatible hypotheses, there is a red, negatively weighted link between these nodes.  This means that when one of the nodes has a positive value, it tends to push the other node to a negative value, and vice versa.
+Since these two nodes represent competing, incompatible hypotheses, there is a red, negatively weighted link between them.  This means that when one of the nodes has a positive value, it tends to push the other node to a negative value, and vice versa.  That is, nodes at either end of a negatively weighted link try to push each other to adopt the *opposite* attitude toward their hypotheses.
 
-The same lower-left node in the left-hand subnetwork is also connected by a diagonal red line to another node in the right-hand subnetwork.  The latter node represents the back lower left corner in the right hand subnetwork--but that is exactly the same corner that the lower left node in the left-hand subnetwork represents.  So these two nodes are linked by a negatively weighted link, too since they can't both be "right" about what is the back left corner of the cube.
+Now notice that the same lower-left node in the left-hand subnetwork is *also* connected by a diagonal red line to a second node in the right-hand subnetwork.  These two nodes are inconsistent as well.  The lower left node in the left figure represents the back lower left corner in the right hand subnetwork--but that is exactly the same corner that the lower left node in the left-hand subnetwork represents.  These nodes are linked by a negatively weighted link because they can't both be "right" about what counts as the back left corner of the cube.
 
-So the gradual updating of the activation values of the nodes--the settling of the network--is the result both of the positive links between nodes in the same subnetwork, and the negative links between competing nodes in the two subnetworks.
+Thus, the gradual updating of the activation values of the nodes--the settling of the network--is in fact the result of both positive links between nodes in the same subnetwork, and the negative links between competing nodes in the two subnetworks.
 
 
 ## THINGS TO NOTICE
@@ -731,7 +733,7 @@ On the other hand, sometimes the model is permanently stuck in a state that is "
 
 Sometimes the model takes a long time to settle, and sometimes settles quickly.  You can run the model again using the same starting configuration with the *again* button.  Then you can run it once step at a time using the *go once* button, run it more slowly with the speed slider, turn on display of activation values, or change some of the slider parameters to see what will happen.
 
-Is there an obvious difference between patterns for starting activation values for which settling takes a long time, and those for which settling is quick?
+Is there an obvious difference between patterns for starting activation values for which settling takes a long time, and those for which settling is quick?  If you run the model slowly (using the slider near the top), how early can you predict which cube will end up being chosen (i.e. end up with all blue nodes)?
 
 How does settling change if you adjust some of the slider values?  For the same initial pattern of activations?  On average?
 
@@ -752,17 +754,17 @@ neighbors simultaneously.
     * The activation (`prev-activation`) of every neighbor multiplied by the weight of        the link between the neighbor and the node, and
     * The value of `external-input` (set by a slider in the GUI),
 
-except that if the sum is less than -1 the activation is set to -1, and if the sum greater than 1, the activation is set to 1.
+*except that* if the sum is less than -1 then the activation is set to -1, and if the sum greater than 1, the activation is set to 1.
 
-Randomly setting the activation values is done using what's known as a pseudorandom number generator, which generates numbers that appear sufficiently random for the purposes of simulations such as this one, but that are controlled by an initial value known as a "seed".  Although activation values appear to be set randomly, using the same a particular seed always produces the same "random" values.  The current seed is displayed near the bottom of the user interface for the model.  *setup* chooses a new seed each time; *again* uses the seed from last time.
+Randomly setting the activation values is done using what's known as a pseudorandom number generator, which generates numbers that appear sufficiently random for the purposes of simulations such as this one, but that are controlled by an initial value known as a "seed".  Although activation values appear to be set randomly, using a particular seed always produces the same "random" values.  The current seed is displayed near the bottom of the user interface for the model.  *setup* chooses a new seed each time; *again* uses the seed from last time.
 
 It's also possible to use an old seed by copying it and then entering a command in the command-center: `set seed <old-seed>`.
 
 ### Reading the code
 
-Most of the source code merely sets up the network.  This requires a bit of code because there are 16 nodes and 40 constraint links.  Each of these 56 items has a particular meaning and function, and each needs to be displayed on the screen in a particular way.  Many of the global variables are needed only for the setup process.
+Most of the source code merely sets up the network.  There are 16 nodes and 40 constraint links, and each of these 56 items has a particular meaning and function, and needs to be displayed on the screen in a particular way.  Many of the global variables are needed only for the setup process.
 
-The code that actually runs the network consists of about 50 lines of code, all appearing before the setup code (which is marked as such).  To understand what is happening within the network, you can start by reading those relatively few lines.  I suggest starting with the `go` routine, then skipping down to `settle-network`.
+The code that actually runs the network consists of about 50 lines, all appearing before the setup code (which is marked as such).  To understand what is happening within the network, you might want to start by reading those relatively few lines.  I suggest starting with the `go` routine, then skipping down to `settle-network`.
 
 (There is an alternative, commented-out version of the `settle-network` function, which is my attempt to implement the algorithm described in the Rumelhart et al. chapter cited below.)
 
