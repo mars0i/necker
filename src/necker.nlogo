@@ -649,11 +649,11 @@ For a more detailed introduction to this model and the ideas behind it, see TUTO
 
 SETUP sets each node's activation value to a random number between -1 and 1.
 
-AGAIN does the same thing, but uses the random configuration from the last run, so that you can examine the run at slower tick speed, turn on *show-activations*, or see how changing some configuration parameter affects behavior given the same starting point.
-
 GO ONCE performs one iteration of settling.  That is, each node's activation value is adjusted due to the influence of the activation values of the nodes to which it is connected, and the weights of the links between nodes.
 
 GO does the same thing as GO ONCE, but does it repeatedly until the activation values of the nodes stop changing significantly.
+
+AGAIN does the same thing as SETUP, but uses the random configuration from the last run, so that you can examine the run at slower tick speed, turn on *show-activations*, or see how changing some configuration parameter affects behavior given the same starting point.
 
 WEIGHT-RATIO specifies the ratio of the absolute value of the weight on negative links to the weight on positive links.  This is set to 2/3 by default, so that, for example if the weight on a negative link is -1/2, the weight on a positive link will be 2/3 of 1/2, or 2/6 = 1/3.  The reason that the weight-ratio is normally set to 2/3 is that each node had three positive links and two negative links.  Since 3 * 2/3 = 2, this means that the net effect of the positive links will be balanced by the net effect of the negative links.
 
@@ -670,6 +670,25 @@ SHOW-ACTIVATIONS allows you to see the activation values for each node.  The loc
 SEED shows the random seed used for the current run.  See HOW IT WORKS for more information.
 
 Notice that as with most NetLogo models, you can slow down or speed up the settling process using NetLogo's speed slider.  This doesn't affect the process, but it might allow you to watch what happens during settling, or to focus on the end result.
+
+
+## THINGS TO NOTICE
+
+NetLogo shows the number of ticks,, i.e. cycles, that it takes to settle the network.  Notice that this number varies from run to run depending on the initial random activation values.
+
+Often, the network will settle in a few ticks.  But sometimes it gets into a state in which each subnetwork contains a mix of positive and negative nodes that remains somewhat stable for a while.  
+
+If the colors seem somewhat stable but you see some of the activations changing--if the colors seem to be flashing a little bit--then let the model run for while.  (You can speed it up with the speed slider if you want.)  It's likely that it will eventually settle.
+
+On the other hand, sometimes the model is permanently stuck in a state that is "paradoxical"--in which each network is representing an incompatible mix of hypotheses about locations of corners in three dimensions.  The model may stop running if the activation values have stopped changing, or it may continue running, apparently forever.  This is rare with the default parameters, but it can happen.  If the model hasn't stopped but you don't see any of the nodes flashing, that may be what is going on.  You can turn on *show-activations* to see that the activation values are in fact changing a little bit.
+
+## THINGS TO TRY
+
+Sometimes the model takes a long time to settle, and sometimes settles quickly.  You can run the model again using the same starting configuration with the *again* button.  Then you can run it once step at a time using the *go once* button, run it more slowly with the speed slider, turn on display of activation values, or change some of the slider parameters to see what will happen.
+
+Is there an obvious difference between patterns for starting activation values for which settling takes a long time, and those for which settling is quick?  If you run the model slowly (using the slider near the top), how early can you predict which cube will end up being chosen (i.e. end up with all blue nodes)?
+
+How does settling change if you adjust some of the slider values?  For the same initial pattern of activations?  On average?
 
 
 ## TUTORIAL
@@ -718,24 +737,6 @@ Now notice that the same lower-left node in the left-hand subnetwork is *also* c
 
 Thus, the gradual updating of the activation values of the nodes--the settling of the network--is in fact the result of both positive links between nodes in the same subnetwork, and the negative links between competing nodes in the two subnetworks.
 
-
-## THINGS TO NOTICE
-
-NetLogo shows the number of ticks,, i.e. cycles, that it takes to settle the network.  Notice that this number varies from run to run depending on the initial random activation values.
-
-Often, the network will settle in a few ticks.  But sometimes it gets into a state in which each subnetwork contains a mix of positive and negative nodes that remains somewhat stable for a while.  
-
-If the colors seem somewhat stable but you see some of the activations changing--if the colors seem to be flashing a little bit--then let the model run for while.  (You can speed it up with the speed slider if you want.)  It's likely that it will eventually settle.
-
-On the other hand, sometimes the model is permanently stuck in a state that is "paradoxical"--in which each network is representing an incompatible mix of hypotheses about locations of corners in three dimensions.  The model may stop running if the activation values have stopped changing, or it may continue running, apparently forever.  This is rare with the default parameters, but it can happen.  If the model hasn't stopped but you don't see any of the nodes flashing, that may be what is going on.  You can turn on *show-activations* to see that the activation values are in fact changing a little bit.
-
-## THINGS TO TRY
-
-Sometimes the model takes a long time to settle, and sometimes settles quickly.  You can run the model again using the same starting configuration with the *again* button.  Then you can run it once step at a time using the *go once* button, run it more slowly with the speed slider, turn on display of activation values, or change some of the slider parameters to see what will happen.
-
-Is there an obvious difference between patterns for starting activation values for which settling takes a long time, and those for which settling is quick?  If you run the model slowly (using the slider near the top), how early can you predict which cube will end up being chosen (i.e. end up with all blue nodes)?
-
-How does settling change if you adjust some of the slider values?  For the same initial pattern of activations?  On average?
 
 ## HOW IT WORKS
 
