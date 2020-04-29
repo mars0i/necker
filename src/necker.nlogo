@@ -630,6 +630,16 @@ seed:
 0.0
 1
 
+TEXTBOX
+20
+265
+165
+315
+Not sure what this is or how to use it?  Click on Model Info.
+12
+15.0
+1
+
 @#$#@#$#@
 ## WHAT IS IT?
 
