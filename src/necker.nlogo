@@ -694,7 +694,7 @@ On the other hand, sometimes the model is permanently stuck in a state that is "
 
 ## THINGS TO TRY
 
-Sometimes the model takes a long time to settle, and sometimes settles quickly.  You can run the model again using the same starting configuration with the *again* button.  Then you can run it once step at a time using the *go once* button, run it more slowly with the speed slider, turn on display of activation values, or change some of the slider parameters to see what will happen.
+Sometimes the model takes a long time to settle, and sometimes it settles quickly.  You can run the model again using the same starting configuration with the *again* button.  Then you can run it once step at a time using the *go once* button, run it more slowly with the speed slider, turn on display of activation values, or change some of the slider parameters to see what will happen.
 
 Is there an obvious difference between patterns for starting activation values for which settling takes a long time, and those for which settling is quick?  If you run the model slowly (using the slider near the top), how early can you predict which cube will end up being chosen (i.e. end up with all blue nodes)?
 
