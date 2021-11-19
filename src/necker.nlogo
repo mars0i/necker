@@ -784,7 +784,7 @@ The code that actually runs the network consists of about 50 lines, all appearin
 
 This NetLogo model was written by Marshall Abrams, Associate Professor of Philosophy at the University of Alabama at Birmingham (http://members.logical.net/~marshall).  If there is a more recent version of this model, it can be found here: https://github.com/mars0i/necker .
 
-The model was inspired by a description in "Schemata and Sequential Thought Processes in PDP Models" D. E. Rumelhart, P. Smolensky, J. 1. McClelland and G. E. Hinton, chapter 14 in *Parallel Distributed Processing, Vol. 2: Psychological and Biological Models*, eds. James L. McLelland, David E. Rumelhart.
+The model was inspired by a description in "Schemata and Sequential Thought Processes in PDP Models" D. E. Rumelhart, P. Smolensky, J. L. McClelland and G. E. Hinton, chapter 14 in *Parallel Distributed Processing, Vol. 2: Psychological and Biological Models*, eds. James L. McLelland, David E. Rumelhart.
 
 I started thinking about writing this to help students understand a less detailed description in Keith Holyoak and Paul Thagard's *Mental Leaps: Analogy in Creative Thought*, MIT Press 1995.  I was also inspired by a Java applet that A. D. Marshall at Cardiff University had made available on the web previously.  This is no longer available, though--no doubt partly because Java applets are considered obsolete and potentially dangerous.
 
