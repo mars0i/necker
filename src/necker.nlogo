@@ -773,7 +773,7 @@ It's also possible to use an old seed by copying it and then entering a command 
 
 ### Reading the code
 
-Most of the source code merely sets up the network.  There are 16 nodes and 40 constraint links, and each of these 56 items has a particular meaning and function, and needs to be displayed on the screen in a particular way.  Many of the global variables are needed only for the setup process.
+Most of the source code merely sets up the network.  There are 16 nodes and 40 constraint links, and each of these 56 items has a particular meaning and function and needs to be displayed on the screen in a particular way.  Many of the global variables are needed only for the setup process.
 
 The code that actually runs the network consists of about 50 lines, all appearing before the setup code (which is marked as such).  To understand what is happening within the network, you might want to start by reading those relatively few lines.  I suggest starting with the `go` routine, then skipping down to `settle-network`.
 
